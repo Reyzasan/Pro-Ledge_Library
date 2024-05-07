@@ -12,7 +12,7 @@
     </div>
 </div>
 @endif
-    <form action='{{ url('buku') }}' method='post'>
+    <form action='{{ url('buku') }}' method='post' enctype="multipart/form-data">
         @csrf
         <div class="my-3 p-3 bg-body rounded shadow-sm">
             {{-- <a href="{{url('buku')}}" class="btn btn-secondary"><< Kembali</a> --}}
@@ -20,6 +20,12 @@
                 <label for="id" class="col-sm-2 col-form-label">ID</label>
                 <div class="col-sm-10">
                     <input type="number" class="form-control" name='id' value="{{ Session::get('id') }}" id="id">
+                </div>
+            </div>
+            <div class="mb-3 row">
+                <label for="foto" class="col-sm-2 col-form-label">Image</label>
+                <div class="col-sm-10">
+                    <input type="file" class="form-control" name='foto' id="foto">
                 </div>
             </div>
             <div class="mb-3 row">

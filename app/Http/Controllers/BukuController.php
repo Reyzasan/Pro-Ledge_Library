@@ -39,40 +39,36 @@ class BukuController extends Controller
      * Store a newly created resource in storage.
      */
     public function store(Request $request)
-    {
-        Session()->flash('id', $request->id);
-        Session()->flash('nama_buku', $request->nama_buku);
-        Session()->flash('kategori', $request->kategori);
-        Session()->flash('tahun_terbit', $request->tahun_terbit);
-        Session()->flash('stock', $request->stock);
-        $request->validate([
-            'id' => 'required|numeric|unique:buku,id',
-            'nama_buku' => 'required',
-            'kategori' => 'required',
-            'tahun_terbit' => 'required|date_format:Y',
-            'stock' => 'numeric',
-        ],[
-            'id.required' => 'ID wajib diisi!',
-            'id.numeric' => 'ID hanya boleh berupa angka!',
-            'id.unique' => 'ID sudah terdaftar!',
-            'nama_buku.required' => 'Nama buku wajib diisi!',
-            'kategori.required' => 'Kategori wajib diisi!',
-            'tahun_terbit.required' => 'Tahun terbit wajib diisi!',
-            'tahun_terbit.date_format' => 'Format tahun terbit tidak valid (Format yang diterima: YYYY)!',
-            'stock.numeric' => 'Stock harus berupa angka!',
-        ]);
+{
+    $request->validate([
+        'id' => 'required|numeric|unique:buku,id',
+        'nama_buku' => 'required',
+        'kategori' => 'required',
+        'tahun_terbit' => 'required|date_format:Y',
+        'stock' => 'numeric',
+    ], [
+        'id.required' => 'ID wajib diisi!',
+        'id.numeric' => 'ID hanya boleh berupa angka!',
+        'id.unique' => 'ID sudah terdaftar!',
+        'nama_buku.required' => 'Nama buku wajib diisi!',
+        'kategori.required' => 'Kategori wajib diisi!',
+        'tahun_terbit.required' => 'Tahun terbit wajib diisi!',
+        'tahun_terbit.date_format' => 'Format tahun terbit tidak valid (Format yang diterima: YYYY)!',
+        'stock.numeric' => 'Stock harus berupa angka!',
+    ]);
+    $tahun_terbit = Carbon::createFromFormat('Y', $request->tahun_terbit)->startOfYear()->format('Y-m-d');
 
+    $data = [
+        'id' => $request->id,
+        'nama_buku' => $request->nama_buku,
+        'kategori' => $request->kategori,
+        'tahun_terbit' => $tahun_terbit, // Tidak perlu diproses tambahan, karena sudah dalam format yang benar
+        'stock' => $request->stock,
+    ];
+    buku::create($data);
+    return redirect()->to('buku')->with('success', 'Data Berhasil Ditambahkan!');
+}
 
-        $data = [
-            'id'=>$request->id,
-            'nama_buku'=>$request->nama_buku,
-            'kategori'=>$request->kategori,
-            'tahun_terbit'=>$request->tahun_terbit,
-            'stock'=>$request->stock,
-        ];
-        buku::create($data);
-        return redirect()->to('buku')->with('success', 'Data Berhasil Ditambahkan!');
-    }
 
     /**
      * Display the specified resource.
@@ -102,18 +98,28 @@ class BukuController extends Controller
             'kategori'=>'required',
             'tahun_terbit' => 'required|date_format:Y',
             'stock'=>'numeric',
+            'foto'=>'required|mimes:jpeg,jpg,png,gif',
         ],[
             'nama_buku.required'=>'nama_buku wajib diisi!',
             'kategori.required'=>'kategori wajib diisi!',
             'tahun_terbit.required' => 'Tahun terbit wajib diisi!',
             'tahun_terbit.date_format' => 'Format tahun terbit tidak valid (Format yang diterima: YYYY)!',
             'stock.numeric'=>'Stock wajib diisi!',
+            'foto.required' => 'Foto wajib diisi',
+            'foto.mimes' => 'Foto hanya bisa berekstensi jpeg,jpg,png,gif',
         ]);
+        $foto_file = $request->file('foto');
+        $foto_ekstensi = $foto_file->extension();
+        $foto_nama = date('ymdhis').".". $foto_ekstensi;
+        $foto_file->move(public_path('foto'),$foto_nama);
+
+        $tahun_terbit = Carbon::createFromFormat('Y', $request->tahun_terbit)->startOfYear()->format('Y-m-d');
         $data = [
             'nama_buku'=>$request->nama_buku,
             'kategori'=>$request->kategori,
-            'tahun_terbit'=>$request->tahun_terbit,
+            'tahun_terbit'=>$tahun_terbit,
             'stock'=>$request->stock,
+            'foto' => $foto_nama,
         ];
         buku::where('id',$id)->update($data);
         return redirect()->to('buku')->with('success', 'Data Berhasil Terupdate!');

@@ -29,6 +29,7 @@
                  <tr>
                      <th class="col-md-1">No</th>
                      <th class="col-md-2">ID</th>
+                     <th class="col-md-1">Foto</th>
                      <th class="col-md-2">Judul</th>
                      <th class="col-md-2">Kategori</th>
                      <th class="col-md-2">Tahun Terbit</th>
@@ -39,6 +40,11 @@
                  <?php $i = $data->firstItem(); ?>
                  @foreach ($data as $item)
                      <tr>
+                        <td>
+                            @if ($item->foto)
+                                <img src="{{url('foto').}}" alt="">
+                            @endif
+                        </td>
                          <td>{{ $i }}</td>
                          <td>{{ $item->id }}</td>
                          <td>{{ $item->nama_buku }}</td>
