@@ -40,13 +40,13 @@
                  <?php $i = $data->firstItem(); ?>
                  @foreach ($data as $item)
                      <tr>
-                        <td>
-                            @if ($item->foto)
-                                <img src="{{url('foto').}}" alt="">
-                            @endif
-                        </td>
                          <td>{{ $i }}</td>
                          <td>{{ $item->id }}</td>
+                         <td>
+                            @if ($item->foto)
+                                <img style="max-width:50px; max-heigt:50;" src="{{url('foto').'/'.$item->foto}}" alt="">
+                            @endif
+                        </td>
                          <td>{{ $item->nama_buku }}</td>
                          <td>
                              @if ($item->kategoris)

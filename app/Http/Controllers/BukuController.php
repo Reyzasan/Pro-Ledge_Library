@@ -46,6 +46,7 @@ class BukuController extends Controller
         'kategori' => 'required',
         'tahun_terbit' => 'required|date_format:Y',
         'stock' => 'numeric',
+        'foto'=>'required|mimes:jpeg,jpg,png,gif',
     ], [
         'id.required' => 'ID wajib diisi!',
         'id.numeric' => 'ID hanya boleh berupa angka!',
@@ -55,8 +56,14 @@ class BukuController extends Controller
         'tahun_terbit.required' => 'Tahun terbit wajib diisi!',
         'tahun_terbit.date_format' => 'Format tahun terbit tidak valid (Format yang diterima: YYYY)!',
         'stock.numeric' => 'Stock harus berupa angka!',
+        'foto.required' => 'Foto wajib diisi',
+        'foto.mimes' => 'Foto hanya bisa berekstensi jpeg,jpg,png,gif',
     ]);
-    $tahun_terbit = Carbon::createFromFormat('Y', $request->tahun_terbit)->startOfYear()->format('Y-m-d');
+    $tahun_terbit = Carbon::createFromFormat('Y', $request->tahun_terbit)->startOfYear()->format('Y');
+    $foto_file = $request->file('foto');
+        $foto_ekstensi = $foto_file->extension();
+        $foto_nama = date('ymdhis').".". $foto_ekstensi;
+        $foto_file->move(public_path('foto'),$foto_nama);
 
     $data = [
         'id' => $request->id,
@@ -64,6 +71,7 @@ class BukuController extends Controller
         'kategori' => $request->kategori,
         'tahun_terbit' => $tahun_terbit, // Tidak perlu diproses tambahan, karena sudah dalam format yang benar
         'stock' => $request->stock,
+        'foto' => $foto_nama,
     ];
     buku::create($data);
     return redirect()->to('buku')->with('success', 'Data Berhasil Ditambahkan!');

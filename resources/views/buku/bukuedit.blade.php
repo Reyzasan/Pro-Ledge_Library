@@ -12,7 +12,7 @@
     </div>
 </div>
 @endif
-    <form action='{{ url('buku/'.$data->id) }}' method='post'>
+    <form action='{{ url('buku/'.$data->id) }}' method='post' enctype="multipart/form-data">
         @csrf
         @method('PUT')
         <div class="my-3 p-3 bg-body rounded shadow-sm">
@@ -21,6 +21,12 @@
                 <label for="id" class="col-sm-2 col-form-label">ID</label>
                 <div class="col-sm-10">
                     {{ $data->id }}
+                </div>
+            </div>
+            <div class="mb-3 row">
+                <label for="foto" class="col-sm-2 col-form-label">Image</label>
+                <div class="col-sm-10">
+                    <input type="file" class="form-control" name='foto' id="foto">
                 </div>
             </div>
             <div class="mb-3 row">
