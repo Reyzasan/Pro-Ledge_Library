@@ -12,9 +12,9 @@
     </div>
 </div>
 @endif
-    <form action='{{ url('buku/'.$data->id) }}' method='post' enctype="multipart/form-data">
+    <form action='{{ url('buku/'.$data->id) }}' method='get' enctype="multipart/form-data">
         @csrf
-        @method('PUT')
+        @method('get')
         <div class="my-3 p-3 bg-body rounded shadow-sm">
             <a href="{{url('buku')}}" class="btn btn-secondary"><< Kembali</a>
             <div class="mb-3 row">
@@ -23,11 +23,11 @@
                     {{ $data->id }}
                 </div>
             </div>
-            {{-- @if ($data->foto)
+            @if ($data->foto)
                 <div class="mb-3">
                     <img style="max-height: 50px;max-width: 50px" src="{{url('foto').'/'.$data->foto}}" alt="" srcset="">
                 </div>
-            @endif --}}
+            @endif
             <div class="mb-3 row">
                 <label for="foto" class="col-sm-2 col-form-label">Image</label>
                 <div class="col-sm-10">

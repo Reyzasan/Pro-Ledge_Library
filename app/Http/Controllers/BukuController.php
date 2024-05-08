@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 use App\Models\buku;
 use App\Models\kategori;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\File;
 use Carbon\Carbon;
 
 
@@ -61,9 +62,9 @@ class BukuController extends Controller
     ]);
     $tahun_terbit = Carbon::createFromFormat('Y', $request->tahun_terbit)->startOfYear()->format('Y');
     $foto_file = $request->file('foto');
-        $foto_ekstensi = $foto_file->extension();
-        $foto_nama = date('ymdhis').".". $foto_ekstensi;
-        $foto_file->move(public_path('foto'),$foto_nama);
+    $foto_ekstensi = $foto_file->extension();
+    $foto_nama = date('ymdhis').".". $foto_ekstensi;
+    $foto_file->move(public_path('foto'),$foto_nama);
 
     $data = [
         'id' => $request->id,
@@ -83,7 +84,12 @@ class BukuController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $data = buku::where('id', $id)->first();
+    if (!$data) {
+        // Optionally, handle the case where no book is found
+        return redirect('some/route')->with('error', 'Book not found');
+    }
+    return view('buku.bukudetail', compact('data'));
     }
 
     /**
@@ -116,19 +122,29 @@ class BukuController extends Controller
             'foto.required' => 'Foto wajib diisi',
             'foto.mimes' => 'Foto hanya bisa berekstensi jpeg,jpg,png,gif',
         ]);
-        $foto_file = $request->file('foto');
-        $foto_ekstensi = $foto_file->extension();
-        $foto_nama = date('ymdhis').".". $foto_ekstensi;
-        $foto_file->move(public_path('foto'),$foto_nama);
 
-        $tahun_terbit = Carbon::createFromFormat('Y', $request->tahun_terbit)->startOfYear()->format('Y-m-d');
-        $data = [
+        $tahun_terbit = Carbon::createFromFormat('Y', $request->tahun_terbit)->startOfYear()->format('Y');        $data = [
             'nama_buku'=>$request->nama_buku,
             'kategori'=>$request->kategori,
             'tahun_terbit'=>$tahun_terbit,
             'stock'=>$request->stock,
-            'foto' => $foto_nama,
         ];
+        if ($request->hasFile('foto')) {
+            $request->validate([
+                'foto'=>'mimes:jpeg,jpg,png,gif',
+            ],[
+                'foto.mimes' => 'Foto hanya bisa berekstensi jpeg,jpg,png,gif'
+            ]);
+            $foto_file = $request->file('foto');
+            $foto_ekstensi = $foto_file->extension();
+            $foto_nama = date('ymdhis').".". $foto_ekstensi;
+            $foto_file->move(public_path('foto'),$foto_nama);
+
+            $data_foto = buku::where('id',$id)->first();
+            File::delete(public_path('foto').'/'.$data_foto->foto);
+
+            $data['foto'] = $foto_nama;
+        }
         buku::where('id',$id)->update($data);
         return redirect()->to('buku')->with('success', 'Data Berhasil Terupdate!');
     }
@@ -138,6 +154,8 @@ class BukuController extends Controller
      */
     public function destroy(string $id)
     {
+        $data = buku::where('id',$id)->first();
+        File::delete(public_path('foto').'/'.$data->foto);
         buku::where('id',$id)->delete();
         return redirect()->to('buku')->with('success','Data Berhasil Dihapus!');
     }

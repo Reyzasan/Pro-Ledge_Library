@@ -28,10 +28,10 @@
              <thead>
                  <tr>
                      <th class="col-md-1">No</th>
-                     <th class="col-md-2">ID</th>
-                     <th class="col-md-1">Foto</th>
-                     <th class="col-md-2">Judul</th>
-                     <th class="col-md-2">Kategori</th>
+                     <th class="col-md-1.2">ID</th>
+                     <th class="col-md-1.5">Foto</th>
+                     <th class="col-md-1.5">Judul</th>
+                     <th class="col-md-1.5">Kategori</th>
                      <th class="col-md-2">Tahun Terbit</th>
                      <th class="col-md-1">Stock</th>
                  </tr>
@@ -43,10 +43,11 @@
                          <td>{{ $i }}</td>
                          <td>{{ $item->id }}</td>
                          <td>
-                            @if ($item->foto)
-                                <img style="max-width:50px; max-heigt:50;" src="{{url('foto').'/'.$item->foto}}" alt="">
-                            @endif
-                        </td>
+                             @if ($item->foto)
+                                 <img style="max-width:50px; max-heigt:50;" src="{{ url('foto') . '/' . $item->foto }}"
+                                     alt="">
+                             @endif
+                         </td>
                          <td>{{ $item->nama_buku }}</td>
                          <td>
                              @if ($item->kategoris)
@@ -58,6 +59,7 @@
                          <td>{{ $item->tahun_terbit }}</td>
                          <td>{{ $item->stock }}</td>
                          <td>
+                             <a href='{{ url('buku/'. $item->id . '/show') }}' class="btn btn-secondary btn-sm">Detail</a>
                              <a href='{{ url('buku/' . $item->id . '/edit') }}' class="btn btn-warning btn-sm">Edit</a>
                              <form onsubmit="return confirm('Yakin Data Akan Dihapus')" class="d-inline"
                                  action="{{ url('buku/' . $item->id) }}" method="post">
