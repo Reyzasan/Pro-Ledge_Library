@@ -10,7 +10,7 @@ use Carbon\Carbon;
 class buku extends Model
 {
     use HasFactory;
-    protected $fillable = ['id', 'nama_buku', 'kategori', 'tahun_terbit','stock','foto'];
+    protected $fillable = ['nama_buku', 'kategori', 'pengarang','tahun_terbit','penerbit','stock','foto'];
     protected $table = 'buku';
     public $timestamps = false;
 
@@ -18,4 +18,18 @@ class buku extends Model
     {
         return $this->belongsTo(kategori::class, 'kategori', 'id');
     }
+
+    public function penerbits()
+    {
+        return $this->belongsTo(penerbit::class, 'penerbit', 'id');
+    }
+    public function pengarangs()
+    {
+        return $this->belongsTo(penerbit::class, 'pengarang', 'id');
+    }
+
+    // public function detailPeminjaman()
+    // {
+    //     return $this->hasMany(DetailPeminjaman::class, 'buku_id');
+    // }
 }

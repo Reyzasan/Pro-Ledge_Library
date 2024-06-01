@@ -34,21 +34,16 @@ class KategoriBukuController extends Controller
      */
     public function store(Request $request)
     {
-        Session()->flash('id', $request->id);
         Session()->flash('kategori', $request->kategori);
         Session()->flash('deskripsi', $request->deskripsi);
         $request->validate([
-            'id'=>'required|string|unique:kategori,id',
             'kategori'=>'required',
             'deskripsi'=>'required',
         ],[
-            'id.required'=>'id wajib diisi!',
-            'id.unique'=>'id sudah terdaftar!',
             'kategori.required'=>'kategori wajib diisi!',
             'deskripsi.required'=>'deskripsi wajib diisi!',
         ]);
         $data = [
-            'id'=>$request->id,
             'kategori'=>$request->kategori,
             'deskripsi'=>$request->deskripsi,
         ];

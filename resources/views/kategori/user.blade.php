@@ -1,4 +1,4 @@
- @extends('kategori.desain')
+ @extends('desain.sidebaradmin')
  <!-- START DATA -->
  @section('konten')
      @if (Session::has('success'))
@@ -21,7 +21,7 @@
 
          <!-- TOMBOL TAMBAH DATA -->
          <div class="pb-3">
-             <a href='{{ url('kategori/create') }}' class="btn btn-primary">+ Tambah Data</a>
+             <a href='{{ url('kategori/create') }}' class="btn btn-primary">Tambah Data</a>
          </div>
 
          <table class="table table-striped">

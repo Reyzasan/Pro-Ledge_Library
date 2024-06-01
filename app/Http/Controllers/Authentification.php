@@ -2,87 +2,114 @@
 
 namespace App\Http\Controllers;
 use App\Models\User;
+use App\Models\Profile;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Post;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Validator;
 
 class Authentification extends Controller
 {
-    function index()
+    public function index()
     {
-        return view("Autentifikasi/data");
+        return view("desain/login");
     }
-    function login(Request $request)
+
+    public function authenticate(Request $request)
     {
-        Session::flash('email', $request->email);
-        Session::flash('password', $request->password);
-        $request->validate([
-            'email'=>'required',
-            'password'=>'required',
-        ],[
-            'email.required'=>'Email Wajib Diisi',
-            'password.required'=>'Password Wajib Diisi',
+        $validator = Validator::make($request->all(), [
+            'email' => 'required',
+            'password' => 'required',
         ]);
 
-        $login = [
-            'email'=>$request->email,
-            'password'=>$request->password,
-        ];
-
-        if (Auth::attempt($login)) {
-            return redirect('buku')->with('Berhasil Masuk');
-        }else{
-            return redirect('authe')->withErrors('email dan password tidak valid');
-        };
+        //admin
+        if ($validator->passes()) {
+            if (Auth::attempt(['email' => $request->email, 'password' => $request->password])) {
+                $user = Auth::user();
+                if ($user->role == 'admin') {
+                    return redirect()->route('admin.tampilan');
+                } elseif ($user->role == 'petugas') {
+                    return redirect()->route('petugas.lihat');
+                }else {
+                    return redirect()->route('account.dashboard');
+                }
+            } else {
+                return redirect()->route('account.login')->with('error', 'Either Email or Password is incorrect');
+            }
+        } else {
+            return redirect()->route('account.login')
+                ->withInput()
+                ->withErrors($validator);
+        }
     }
 
-    function logout(){
-        Auth::logout();
-        return redirect('authe')->with("Berhasil Logout");
-    }
-
-    function register()
+    public function register()
     {
-        return view('Autentifikasi/register');
+        return view('desain/register');
     }
-    function create(Request $request)
+
+    public function ProcessRegister(Request $request)
     {
-        Session::flash('email', $request->email);
-        Session::flash('password', $request->password);
-        Session::flash('name', $request->name);
-        $request->validate([
+        $validator = Validator::make($request->all(),[
+            'name' => 'required|string',
             'email'=>'required|email|unique:users',
-            'name'=>'required',
-            'password'=>'required|min:8|max:10',
-        ],[
-            'email.required'=>'Email Wajib Diisi',
-            'email.email'=>'Masukan Email yang Valid',
-            'email.unique'=>'Email sudah digunakan',
-            'name.required'=>'Username Wajib Diisi',
-            'password.required'=>'Password Wajib Diisi',
-            'password.min'=>'Password Minimal 8 Karakter',
-            'password.max'=>'Password Minimal 10 Karakter',
+            'password'=>'required|confirmed',
         ]);
 
-        $data = [
-            'email'=>$request->email,
-            'name'=>$request->name,
-            'password'=>Hash::make($request->password),
-        ];
+        if($validator->passes()){
+            $user = new User();
+            $user->email = $request->email;
 
-        User::create($data);
+            $user->password = Hash::make($request->password);
+            $user->name = $request->name;
+            $user->role = 'pengguna';
+            $user->save();
 
-        $login = [
-            'email'=>$request->email,
-            'name'=>$request->name,
-            'password'=>$request->password,
-        ];
+                // Profile creation logic
+            $createprofile = new Profile();
+            $createprofile->user_id = $user->id;
+            $createprofile->save();
 
-        if (Auth::attempt($login)) {
-            return redirect('buku')->with('Success',  Auth::user()->name . 'Berhasil Register');
+
+            return redirect()->route('account.login')->with('succes','Anda Berhasil Register');
         }else{
-            return redirect('authe')->withErrors('email dan password tidak valid');
-        };
+            // $post = Post::create([
+            //     'name'     => $request->input('name'),
+            //     'email'   => $request->input('email'),
+            //     'email'   => $request->input('password')
+            // ]);
+
+            // if ($post) {
+            //     return response()->json([
+            //         'success' => true,
+            //         'message' => 'Post Berhasil Disimpan!',
+            //     ], 200);
+            // } else {
+            //     return response()->json([
+            //         'success' => false,
+            //         'message' => 'Post Gagal Disimpan!',
+            //     ], 401);
+            // }
+            // return redirect()->route('account.register')
+            // ->withInput()
+            // ->withErrors($validator);
+        }
+        // $getuserid = $user->id;
+        // $createprofile = new Profile();
+        // $createprofile->user_id = $getuserid;
+        // $createprofile->save();
+
+        // return response([
+        //     'user' => $user,
+        //     'token' =>$user->createToken('secret')->plainTextToken
+        // ]);
     }
+
+    public function logout(){
+        Auth::logout();
+        return redirect()->route('account.login');
+    }
+
 }

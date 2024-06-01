@@ -1,4 +1,4 @@
-@extends('kategori.desain')
+@extends('desain.sidebaradmin')
 
 @section('konten')
 @if ($errors->any())
@@ -16,12 +16,6 @@
         @csrf
         <div class="my-3 p-3 bg-body rounded shadow-sm">
             <a href="{{url('kategori')}}" class="btn btn-secondary"><< Kembali</a>
-            <div class="mb-3 row">
-                <label for="id" class="col-sm-2 col-form-label">ID</label>
-                <div class="col-sm-10">
-                    <input type="number" class="form-control" name='id' value="{{ Session::get('id') }}" id="id">
-                </div>
-            </div>
             <div class="mb-3 row">
                 <label for="kategori" class="col-sm-2 col-form-label">Kategori</label>
                 <div class="col-sm-10">

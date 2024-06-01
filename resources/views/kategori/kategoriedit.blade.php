@@ -1,4 +1,4 @@
-@extends('kategori.desain')
+@extends('desain.sidebaradmin')
 
 @section('konten')
 @if ($errors->any())
