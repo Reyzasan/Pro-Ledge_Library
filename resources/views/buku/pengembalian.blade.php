@@ -37,8 +37,17 @@
                 <td>{{ $item->kembali }}</td>
                 <td>{{ $item->denda }}</td>
                 <td>
-                    <span class="badge bg-success">{{ $item->status }}</span>
+                    @if ($item->status == 'kembali')
+                        <span class="badge bg-success">Kembali</span>
+                    @elseif ($item->status == 'terlambat')
+                        <span class="badge bg-danger">Terlambat</span>
+                    @endif
                 </td>
+                {{-- <td>
+                    @if ($item->denda = 0)
+                        retur
+                    @endif
+                </td> --}}
                 {{-- <td>
                     <a href="{{url('pengembalian-buku/'.$item->id)}}" class="btn btn-primary">Kembalikan</a>
                 </td> --}}

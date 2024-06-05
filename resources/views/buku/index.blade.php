@@ -40,6 +40,7 @@
             </tr>
         </thead>
         <tbody>
+            {{-- { ($data)}} --}}
             @foreach ($data as $item)
             <tr>
                 <td>{{ $loop->iteration }}</td>

@@ -18,6 +18,8 @@ return new class extends Migration
             $table->string('kategori');
             $table->string('deskripsi');
             $table->string('penerbit');
+            $table->string('foto');
+            $table->string('status')->nullable();
             $table->timestamps();
         });
     }

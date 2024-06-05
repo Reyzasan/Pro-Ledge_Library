@@ -112,10 +112,12 @@
                 <th class="col-md-2">Pengembalian</th>
                 <th class="col-md-2">Kembali</th>
                 <th class="col-md-2">Status</th>
+                <th class="col-md-2">Denda</th>
                 <th class="col-md-2">Aksi</th>
             </tr>
         </thead>
         <tbody>
+            {{-- {{dd($data)}} --}}
             @foreach ($data as $item)
             <tr>
                 <td>{{ $loop->iteration }}</td>
@@ -134,8 +136,13 @@
                         <span class="badge bg-warning">Belum Disetujui</span>
                     @elseif ($item->status == 'tolak')
                         <span class="badge bg-danger">Ditolak</span>
+                    @elseif ($item->status == 'kembali')
+                        <span class="badge bg-success">Selesai</span>
+                    @elseif ($item->status == 'terlambat')
+                        <span class="badge bg-danger">Terlambat</span>
                     @endif
                 </td>
+                <td>{{ $item->denda }}</td>
                 <td>
                     @if (Auth::check() && is_null($item->status))
                         <a href="{{ route('pinjam-batal',  $item->id) }}" class="btn btn-danger">Batalkan</a>

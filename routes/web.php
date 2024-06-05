@@ -52,7 +52,8 @@ Route::group(['prefix' => 'account'], function () {
         Route::post('profile/{id}', [ProfileController::class, 'profileedit'])->name('profile-edit');
 
         //koleksi
-        Route::post('post/{id}', [BukuController::class, 'postkoleksi'])->name('account.post');
+        Route::post('/account/post/{id}', [BukuController::class, 'postkoleksi'])->name('account.post');
+        Route::post('/account/post-batal/{id}', [BukuController::class, 'batalkoleksi'])->name('account.post-batal');
         Route::get('koleksi', [BukuController::class, 'koleksi'])->name('account.koleksi');
 
         //rating & Review

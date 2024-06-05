@@ -66,12 +66,87 @@
                 </div>
             </div>
         </div>
+
         <div class="col-md-12 mt-4 d-flex justify-content-between">
-            <a href="{{ route('account.peminjaman', $data->id) }}" class="btn btn-success">Pinjam</a>
-            <form action="{{ route('account.post', $data->id) }}" method="POST" style="display: inline;">
+            @php
+                $koleksiPinjam = $pinjam->where('nama_buku', $item)->where('status', '!=', 'kembali')->first();
+            @endphp
+
+            @if (is_null($koleksiPinjam))
+                <a href="{{ route('account.peminjaman', $data->id) }}" class="btn btn-success">Pinjam</a>
+            @elseif ($koleksiPinjam->status == 'kembali')
+                <a href="{{ route('account.peminjaman', $data->id) }}" class="btn btn-success">Pinjam</a>
+            @elseif ($koleksiPinjam->status == 'disetujui')
+                <span class="badge bg-success">Disetujui</span>
+            @elseif ($koleksiPinjam->status == 'batal')
+                <a href="{{ route('account.peminjaman', $data->id) }}" class="btn btn-success">Pinjam</a>
+            @elseif ($koleksiPinjam->status == 'batalkan')
+                <span class="badge bg-danger">Dibatalkan</span>
+            @elseif ($koleksiPinjam->status == 'tolak')
+                <span class="badge bg-danger">Ditolak</span>
+            @elseif (is_null($data->status))
+                <span class="badge bg-warning">Belum Disetujui</span>
+            @endif
+            {{-- @endforeach --}}
+            {{-- {{dd($pinjam)}} --}}
+            {{-- <a href="{{ route('account.peminjaman', $data->id) }}" class="btn btn-success">Pinjam</a>
+                @if ($data->status == 'disetujui')
+                    <span class="badge bg-success">Disetujui</span>
+                @elseif ($data->status == 'batal')
+                    <span class="badge bg-danger">Dibatalkan</span>
+                @elseif (is_null($data->status))
+                    <span class="badge bg-warning">Belum Disetujui</span>
+                @elseif ($data->status == 'tolak')
+                    <span class="badge bg-danger">Ditolak</span>
+                @endif --}}
+        </div>
+        <div>
+            {{-- {{dd($kolek)}} --}}
+            @php
+                $koleksiItem = $kolek->firstWhere('nama_buku', $data->id);
+            @endphp
+            {{-- {{dd($data)}} --}}
+            @if (is_null($koleksiItem) || $koleksiItem->status == 'hapus')
+                <form action="{{ route('account.post', $data->id) }}" method="POST" style="display:inline;">
+                    @csrf
+                    <button type="submit" class="btn btn-success">
+                        Koleksi
+                    </button>
+                </form>
+            @elseif ($koleksiItem->status == 'koleksi')
+                <form action="{{ route('account.post-batal', $data->id) }}" method="POST" style="display:inline;">
+                    @csrf
+                    <button type="submit" class="btn btn-danger btn-sm">
+                        Hapus Koleksi
+                    </button>
+                </form>
+            @endif
+            {{-- <form action="{{ route('account.post', $data->id) }}" method="POST" style="display:inline;">
                 @csrf
-                <button type="submit" class="btn btn-success">Koleksi</button>
+                <button type="submit" class="btn btn-success">
+                    Koleksi
+                </button>
             </form>
+            @foreach ($kolek as $item)
+                @if (is_null($kolek->status) || $kolek->status == 'hapus')
+                    <form action="{{ route('account.post', $kolek->id) }}" method="POST" style="display:inline;">
+                        @csrf
+                        <button type="submit" class="btn btn-success">
+                            Koleksi
+                        </button>
+                    </form>
+                @elseif ($kolek->status == 'koleksi')
+                    <form action="{{ route('account.post-batal', $kolek->id) }}" method="POST" style="display:inline;">
+                        @csrf
+                        <button type="submit" class="btn btn-danger btn-sm">
+                             Hapus Koleksi
+                        </button>
+                    </form>
+                @endif
+            @endforeach --}}
+
+            {{-- {{dd($kolek)}} --}}
+
         </div>
     </div>
     <div class="mt-4">

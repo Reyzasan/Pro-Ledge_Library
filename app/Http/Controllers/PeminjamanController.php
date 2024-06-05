@@ -43,10 +43,11 @@ class PeminjamanController extends Controller
         //membatasi peminjaman 1 akun 1 buku
         $BukuBatas = Peminjaman::where('user', Auth::user()->id)
             ->where('buku', $id)
-            ->whereIn('status', ['disetujui', 'batal', 'tolak'])
-            // ->orWhereNull('status')
+            ->where(function ($query) {
+                $query->whereIn('status', ['disetujui', 'batal', 'tolak'])
+                      ->orWhereNull('status');
+            })
             ->first();
-
         if ($BukuBatas) {
             return redirect()->back()->with('gagal', 'Anda sudah meminjam buku ini.');
         }
@@ -60,6 +61,7 @@ class PeminjamanController extends Controller
                 'tangal_peminjaman' => null,
                 'pengajuan' => Carbon::now(),
                 'tanggal_pengembalian' => null,
+                'kembali' => null,
             ]);
 
             $buku = DB::table('buku')->where('id', $id)->first();
@@ -75,25 +77,19 @@ class PeminjamanController extends Controller
     public function accept($id)
     {
         $peminjaman = Peminjaman::findOrFail($id);
+        $item = Peminjaman::find($id);
         $peminjaman->status = 'disetujui';
         $peminjaman->tangal_peminjaman = Carbon::now()->toDateString();
         $peminjaman->tanggal_pengembalian = Carbon::now()->addDays(10);
         $peminjaman->save();
 
-        // Hitung selisih hari keterlambatan
-        // $tanggalPengembalianSeharusnya = Carbon::parse();
-        // $tanggalPengembalianSebenarnya = Carbon::now();
-        // $selisihHari = $tanggalPengembalianSebenarnya->diffInDays($tanggalPengembalianSeharusnya, false);
+        //pengembalian
+        $peminjaman->kembali = Carbon::now();
+        $item->status = 'kembali';
 
-        // // Jika pengembalian terlambat, hitung denda
-        // if ($selisihHari > 0) {
-        //     $tarifDenda = 1000; // Tarif denda per hari (misalnya Rp 1000 per hari)
-        //     $denda = $selisihHari * $tarifDenda;
-        // } else {
-        //     $denda = 0; // Tidak ada denda jika tidak terlambat
-        // }
         return redirect()->route('pinjam-buku')->with('success', 'Peminjaman disetujui');
     }
+
 
     public function remove($id)
     {

@@ -10,14 +10,15 @@ class PengembalianController extends Controller
 {
     public function index()
     {
-        $data = Peminjaman::where('status', 'kembali')->get();
+        $data = Peminjaman::whereIn('status',['kembali', 'terlambat'])->get();
         return view('buku.pengembalian', compact('data'));
-        // dd($data);
     }
 
     public function pengembalian($id)
     {
         $item = Peminjaman::find($id);
+        $id_buku = $item->buku;
+        $buku = Buku::find($id_buku);
 
         // Pastikan peminjaman ditemukan
         if (!$item) {
@@ -26,39 +27,23 @@ class PengembalianController extends Controller
         if ($item->status != 'disetujui') {
             return redirect()->back()->with('error', 'Pengembalian hanya bisa dilakukan untuk peminjaman yang disetujui');
         }
-        $id_buku = $item->buku;
+        $peminjaman = Peminjaman::findOrFail($id); // memiliki objek peminjaman yang benar
+        $tanggal_pengembalian = $peminjaman->tanggal_pengembalian;
+        $kembali = Carbon::now()->toDateString();
+        // dd($kembali);
 
-        // Cari peminjaman berdasarkan ID
-        $peminjaman = Peminjaman::findOrFail($id);
-        $buku = Buku::find($id_buku);
-
-        // Tanggal saat ini
-        $currentDate = Carbon::now();
-        $peminjaman->kembali = $currentDate->toDateString(); // Set tanggal pengembalian ke tanggal saat ini
-        // $dueDate = Carbon::parse($peminjaman->tanggal_peminjaman)->addDays(7);
-        dd([
-            'tanggal_peminjaman' => $peminjaman->tanggal_peminjaman,
-            'currentDate' => $currentDate->toDateString(),
-            'dueDate' => $dueDate->toDateString()
-        ]);
-
-        // // Periksa apakah pengembalian terlambat
-        if ($currentDate->greaterThan($dueDate)) {
-            // Hitung keterlambatan dalam hari
-            $lateDays = $currentDate->diffInDays($dueDate);
-            // Hitung denda
-            $denda = $lateDays * 1000;
-            $peminjaman->denda = $denda;
+        if (Carbon::create($peminjaman->tanggal_pengembalian)->lessThan($kembali)) {
+            $hari_terlambat = Carbon::create($tanggal_pengembalian)->diffInDays($kembali);
+            $denda = $hari_terlambat * 1000;
+            $item->status = $denda > 0 ? 'terlambat' : 'kembali';
+            $item->denda = $denda;
         } else {
-            $peminjaman->denda = 0;
+            //kalau tidak telat
+            $item->status = 'kembali';
+            $item->denda = 0;
         }
-        // Periksa apakah pengembalian terlambat
-        $fine = $lateDays > 0 ? $lateDays * 1000 : 0;
-        $item->status = 'kembali';
-        // $item->kembali = $currentDate->toDateString();
-        // $item->denda = $fine;
-
-
+        $item->kembali = $kembali;
+       
         // Update stock buku
         $buku->stock += 1;
         $buku->save();

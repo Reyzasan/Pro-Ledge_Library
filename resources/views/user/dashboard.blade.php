@@ -49,24 +49,14 @@
                                         </div>
                                     </div>
                                 @elseif ($item->kategoris->kategori == 'Fantasi')
-                                    <div class="box mb-3" style="width: 80px; height: 19px; background-color: rgb(216, 87, 173); border-radius: 10px; margin-top: 2px">
-                                        <div class="book-box text-center" style="font-size: 12px; color: rgb(17, 51, 187); line-height: 17px;">
+                                @elseif ($item->kategoris->kategori == 'Adventure')
+                                    <div class="box mb-3" style="width: 80px; height: 19px; background-color: rgb(224, 118, 19); border-radius: 10px; margin-top: 2px">
+                                        <div class="book-box text-center" style="font-size: 12px; color: rgb(10, 121, 15); line-height: 17px;">
                                             {{ $item->kategoris->kategori }}
                                         </div>
                                     </div>
                                 @endif
                             </td>
-                            {{-- <div class="kategori">
-                                @if ($item->kategori == 'Horor')
-                                <div class="box mb-3" style="width: 80px; height: 19px; background-color: rgb(34, 28, 29); border-radius: 10px; margin-top: 2px">
-                                    <div class="book-box text-center" style="font-size: 12px; color: rgb(172, 40, 62); line-height: 17px;">
-                                        {{ $item->kategoris->kategori }}
-                                    </div>
-                                </div>
-                                @else
-
-                                @endif
-                            </div> --}}
                             <div class="deskripsi" style="width: 90%; height: 60px; background-color: rgba(253, 253, 253, 0); border-radius: 10px; border: 1px solid rgba(255, 255, 255, 0); overflow: hidden">
                                 <div class="book-box" style="font-size: 0.875rem; color: rgb(0, 0, 0); line-height: 1.25;">
                                     {{-- <div style="width: 100%;">{{ $item->deskripsi ?? 'Deskripsi tidak tersedia' }}</div> --}}
