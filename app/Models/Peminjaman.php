@@ -12,6 +12,8 @@ class Peminjaman extends Model
     public function bukus()
     {
         return $this->belongsTo('App\Models\buku','buku');
+        //'App\Models\buku' -> ini manggil modelnya
+        //'buku' ->ini nama tabel di tabel peminjaman yang jadi wadah manggil
     }
 
     public function userss()

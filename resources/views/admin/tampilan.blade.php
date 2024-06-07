@@ -39,6 +39,7 @@
             </thead>
             <tbody>
                 <?php $i = $data->firstItem(); ?>
+                {{-- {{dd($data)}} --}}
                 @foreach ($data as $item)
                     <tr>
                         <td>{{ $i }}</td>
@@ -59,7 +60,7 @@
                         </td>
                         <td>
                             @if ($item->pengarangs)
-                                {{ $item->pengarangs->id }}
+                                {{ $item->pengarangs->pengarang }}
                             @else
                                 <p style="">Data Tidak Tersedia</p>
                             @endif

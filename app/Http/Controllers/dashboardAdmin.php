@@ -17,8 +17,11 @@ class dashboardAdmin extends Controller
     public function index(Request $request)
     {
         // $data = buku::with('kategori')->get();
+        // $data = buku::find($id);
         $kategori = kategori::all();
         $penerbit = penerbit::all();
+        $pengarang = pengarang::all();
+        // dd($data);
         $katakunci = $request->katakunci;
         if(strlen($katakunci)){
             $data = buku::with('kategoris')->where('id','like',"%$katakunci%")->orwhere('nama_buku','like',"%$katakunci%")->orwhere('kategori','like',"%$katakunci%")->paginate();
@@ -27,7 +30,7 @@ class dashboardAdmin extends Controller
             $data = buku::with('kategoris')->orderBy('id','desc',)->paginate();
             $data = buku::with('penerbits')->orderBy('id','desc',)->paginate();
         }
-        return view('admin.tampilan',compact('data','kategori','penerbit'))->with('data',$data);
+        return view('admin.tampilan',compact('data','kategori','penerbit','pengarang'))->with('data',$data);
     }
 
 

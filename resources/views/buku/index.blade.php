@@ -23,6 +23,9 @@
             <button class="btn btn-secondary" type="submit">Cari</button>
         </form>
     </div>
+    <div>
+        <a href="{{route('pinjam-print')}}?export=pdf" class="btn btn-primary mb-3">Print</a>
+    </div>
 
     <table class="table table-hover table-striped table-bordered">
         <thead class="table-success">

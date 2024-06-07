@@ -7,6 +7,7 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Models\Peminjaman;
 use App\Models\Buku;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class PeminjamanController extends Controller
 {
@@ -15,6 +16,15 @@ class PeminjamanController extends Controller
         $title = 'Halaman Peminjaman Buku';
         $data = Peminjaman::whereIn('status', ['disetujui', 'batalkan','tolak'])->orWhereNull('status')->get();
         return view('buku.index', compact('title', 'data'));
+    }
+
+    public function print(Request $request)
+    {
+        $data = Peminjaman::whereIn('status', ['disetujui', 'batalkan','tolak'])->orWhereNull('status')->get();
+        if($request->get('export') == 'pdf'){
+            $pdf = Pdf::loadView('pdf.assets', ['data' => $data]);
+            return $pdf->stream('Laporan_Peminjaman.pdf');
+        }
     }
 
     private function checkActiveLoans()
@@ -31,7 +41,6 @@ class PeminjamanController extends Controller
             return redirect()->route('account.login')->with('error', 'Anda harus login untuk meminjam buku');
         }
 
-
         // Cek jumlah peminjaman aktif pengguna
         $BukuBatas = $this->checkActiveLoans();
 
@@ -44,7 +53,7 @@ class PeminjamanController extends Controller
         $BukuBatas = Peminjaman::where('user', Auth::user()->id)
             ->where('buku', $id)
             ->where(function ($query) {
-                $query->whereIn('status', ['disetujui', 'batal', 'tolak'])
+                $query->whereIn('status', ['disetujui', 'batalkan', 'tolak'])
                       ->orWhereNull('status');
             })
             ->first();
@@ -153,6 +162,7 @@ class PeminjamanController extends Controller
     public function PeminjamanUser()
     {
         $data = Peminjaman::with(['userss', 'bukus'])->where('user',  (Auth::user()->id))->get();
+        // dd($data);
         return view('user.peminjaman', ['data' => $data]);
     }
 }

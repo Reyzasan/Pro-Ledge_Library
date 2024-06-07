@@ -4,12 +4,12 @@ namespace App\Http\Controllers\api;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Models\buku;
+use App\Models\pengarang;
 
-class BukuAPIController extends Controller
+class APIPengarangController extends Controller
 {
-    public static function getAllDataBuku(){
-        $data = buku::all();
+    public static function getAllDataPengarang(){
+        $data = pengarang::all();
         return response([
             'message' => "Succes Get Data",
             'data' => $data
@@ -17,7 +17,7 @@ class BukuAPIController extends Controller
     }
 
     public static function GetDataName($name = ""){
-        $namas = buku::where('nama_buku', 'LIKE', '%'.$name.'%')->get();
+        $namas = pengarang::where('pengarang', 'LIKE', '%'.$name.'%')->get();
         return response([
             'message' => 'Succes',
             'data' => $namas,

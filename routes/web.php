@@ -43,6 +43,7 @@ Route::group(['prefix' => 'account'], function () {
         ]);
         Route::get('book/{id}', [BukuController::class, 'show'])->name('account.show');
         Route::get('pinjam-buku', [PeminjamanController::class, 'index'])->name('pinjam-buku');
+        Route::get('pinjam-export', [PeminjamanController::class, 'print'])->name('pinjam-print');
         Route::get('pinjam-buku/{id}', [PeminjamanController::class, 'store'])->name('account.peminjaman');
         Route::get('pinjam-buku/disetujui/{id}', [PeminjamanController::class, 'accept'])->name('pinjam-buku.disetujui');
         Route::get('pinjam-buku/batal/{id}', [PeminjamanController::class, 'remove'])->name('pinjam-buku.batal');
