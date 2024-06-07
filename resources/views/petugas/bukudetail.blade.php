@@ -1,11 +1,11 @@
-@extends('desain.sidebaradmin')
+@extends('desain.sidebarpetugas')
 
 @section('konten')
     <form action='{{ url('buku/'.$data->id) }}' method='post' enctype="multipart/form-data">
         @csrf
         @method('PUT')
         <div class="my-3 p-3 bg-body rounded shadow-sm">
-            <a href="{{route('admin.tampilan')}}" class="btn btn-secondary"><< Kembali</a>
+            <a href="{{route('petugas.lihat')}}" class="btn btn-secondary"><< Kembali</a>
             <div class="row mt-3">
                 @if ($data->foto)
                     <div class="col mt-4 mb-3">

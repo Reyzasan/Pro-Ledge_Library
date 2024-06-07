@@ -21,6 +21,9 @@ return Application::configure(basePath: dirname(__DIR__))
             'petugas.guest' => \App\Http\Middleware\PetugasRedirect::class,
             'petugas.auth' => \App\Http\Middleware\PetugasAuthenticate::class,
         ]);
+        $middleware->alias([
+            'checkStatus' => \App\Http\Middleware\CheckUserStatus::class,
+        ]);
         $middleware->redirectTo(
             guests: '/account/login',
             users: '/account/dashboard',

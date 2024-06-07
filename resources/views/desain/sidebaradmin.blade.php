@@ -25,18 +25,17 @@
                 </a>
                 <span class="tooltip">Dashboard</span>
             </div>
-            <div class="Favorit">
-            {{-- <div class="dashboard">
-                <a href="{{route('tampilan.ratings')}}">
-                    <i class='bx bxs-grid-alt'></i>
-                    <span>Ratings</span>
+            <div class="User">
+                <a href="{{route('pengguna.status')}}">
+                    <i class='bx bx-bookmark-alt'></i>
+                    <span>Pengguna</span>
                 </a>
-                <span class="tooltip">Ratings</span>
-            </div> --}}
+                <span class="tooltip">pengguna</span>
+            </div>
             <div class="Data">
                 <a href="{{route('tampilan.create')}}">
                     <i class='bx bx-bookmark-alt'></i>
-                    <span>Tambah Data</span>
+                    <span>Tambah Buku</span>
                 </a>
                 <span class="tooltip">Favorit</span>
             </div>
@@ -56,18 +55,6 @@
                 <a href="{{ url('penerbit') }}">
                     <i class='bx bx-book-reader'></i>
                     <span>Penerbit</span>
-                </a>
-            </div>
-            <div class="peminjaman">
-                <a href="{{route('pinjam-buku')}}">
-                    <i class='bx bx-book-reader'></i>
-                    <span>Peminjaman</span>
-                </a>
-            </div>
-            <div class="Pengembalian">
-                <a href="{{route('pengembalian-buku')}}">
-                    <i class='bx bx-book-reader'></i>
-                    <span>Pengembalian</span>
                 </a>
             </div>
             <div class="logout" style="margin-top: 3rem">

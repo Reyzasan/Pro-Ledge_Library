@@ -1,4 +1,4 @@
-@extends('desain.sidebaradmin')
+@extends('desain.sidebarpetugas')
 
 @section('konten')
     @if ($errors->any())
@@ -16,7 +16,7 @@
         @csrf
         @method('PUT')
         <div class="my-3 p-3 bg-body rounded shadow-sm">
-            <a href="{{ route('admin.tampilan')}}" class="btn btn-secondary"><< Kembali</a>
+            <a href="{{ route('petugas.lihat')}}" class="btn btn-secondary"><< Kembali</a>
             <h4 style="margin-top: 20px; margin-bottom: 30px; text-align:center">Edit Data Buku</h4>
             <div class="mb-3 row">
                 <label for="id" class="col-sm-2 col-form-label">ID</label>

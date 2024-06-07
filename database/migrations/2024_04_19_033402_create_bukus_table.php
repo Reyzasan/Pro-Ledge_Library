@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string('kategori');
             $table->string('penerbit');
             $table->string('pengarang');
+            $table->string('harga')->nullable();
             $table->timestamps();
         });
     }

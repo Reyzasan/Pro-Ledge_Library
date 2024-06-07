@@ -8,6 +8,15 @@
     <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400..800;1,400..800&family=Jacquard+12&family=Pinyon+Script&display=swap" rel="stylesheet">
 </head>
 <body>
+    @if ($errors->any())
+        <div class="pt-3">
+            <div class="alert alert-danger">
+                @foreach ($errors->all() as $error)
+                    {{ $error }}
+                @endforeach
+            </div>
+        </div>
+    @endif
     <div class="container container-custom" style="background-color: rgb(39, 158, 3);width: 100vw; height: 100vh;">
         <div class="row align-items-center min-vh-100">
             <div class="col-md-2">

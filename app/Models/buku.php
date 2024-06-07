@@ -10,7 +10,7 @@ use Carbon\Carbon;
 class buku extends Model
 {
     use HasFactory;
-    protected $fillable = ['nama_buku', 'kategori', 'pengarang','tahun_terbit','penerbit','stock','foto'];
+    protected $fillable = ['nama_buku', 'kategori', 'pengarang','tahun_terbit','penerbit','stock','foto','harga'];
     protected $table = 'buku';
     public $timestamps = false;
 

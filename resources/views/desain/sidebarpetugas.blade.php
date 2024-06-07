@@ -15,31 +15,44 @@
     <div class="sidebar">
         <div class="logo-detail">
             <i class='bx bx-menu-alt-left'></i>
-            <span>Pro-Ledge</span>
+            <span>Pro-Ledge Petugas</span>
         </div>
         <ul class="nav-links">
             <div class="dashboard">
-                <a href="{{route('admin.tampilan')}}">
+                <a href="{{route('petugas.lihat')}}">
                     <i class='bx bxs-grid-alt'></i>
                     <span>Dashboard</span>
                 </a>
                 <span class="tooltip">Dashboard</span>
             </div>
-            <div class="Favorit">
-                <a href="{{route('tampilan.create')}}">
+            <div class="pengguna">
+                <a href="{{route('StatusPetugas')}}">
+                    <i class='bx bxs-grid-alt'></i>
+                    <span>pengguna</span>
+                </a>
+                <span class="tooltip">pengguna</span>
+            </div>
+            <div class="tambahdata">
+                <a href="{{route('lihat.create')}}">
                     <i class='bx bx-bookmark-alt'></i>
                     <span>Tambah Data</span>
                 </a>
-                <span class="tooltip">Favorit</span>
+                <span class="tooltip">tambahdata</span>
             </div>
             <div class="Kategori">
-                <a href="{{ url('kategori') }}">
+                <a href="{{ url('kategoris') }}">
                     <i class='bx bx-book-reader'></i>
                     <span>Kategori</span>
                 </a>
             </div>
+            <div class="Pengarang">
+                <a href="{{ url('pengarangs') }}">
+                    <i class='bx bx-book-reader'></i>
+                    <span>Pengarang</span>
+                </a>
+            </div>
             <div class="Penerbit">
-                <a href="{{ url('penerbit') }}">
+                <a href="{{ url('penerbits') }}">
                     <i class='bx bx-book-reader'></i>
                     <span>Penerbit</span>
                 </a>
@@ -56,7 +69,7 @@
                     <span>Pengembalian</span>
                 </a>
             </div>
-            <div class="logout" style="margin-top: 7rem">
+            <div class="logout" style="margin-top: 4rem">
                 <a href="{{ route('account.logout') }}" class="logout-link">
                     <i class='bx bxs-door-open'></i>
                     <span>Log Out</span>

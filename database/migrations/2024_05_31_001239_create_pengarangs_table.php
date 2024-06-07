@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('pengarang', function (Blueprint $table) {
             $table->id();
             $table->string('pengarang');
-            $table->enum('jk', ['laki-laki', 'perempuan'])->nullable();
+            $table->enum('jk', ['laki-laki', 'perempuan', '-'])->nullable();
             $table->timestamps();
         });
     }

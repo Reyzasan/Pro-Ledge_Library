@@ -1,17 +1,31 @@
 <?php
+
+//General
 use App\Http\Controllers\Authentification;
-use App\Http\Controllers\BukuController;
-use App\Http\Controllers\dashboardAdmin;
-use App\Http\Controllers\KategoriBukuController;
-use App\Http\Controllers\PenerbitController;
 use App\Http\Controllers\LandingPageController;
-use App\Http\Controllers\PeminjamanController;
-use App\Http\Controllers\PengembalianController;
-use App\Http\Controllers\PetugasController;
 use App\Http\Controllers\RatingController;
 use App\Http\Controllers\StarController;
 use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\PengarangController;
+
+//Petugas
+use App\Http\Controllers\Petugas\PetugasControllers;
+use App\Http\Controllers\Petugas\PeminjamanController;
+use App\Http\Controllers\Petugas\PengembalianController;
+use App\Http\Controllers\Petugas\PengarangPetugasController;
+use App\Http\Controllers\Petugas\PenggunaPetugasController;
+use App\Http\Controllers\Petugas\PenerbitPetugasController;
+use App\Http\Controllers\Petugas\KategoriPetugasController;
+
+//Admin
+use App\Http\Controllers\Admin\PengarangController;
+use App\Http\Controllers\Admin\PenggunaController;
+use App\Http\Controllers\Admin\KategoriBukuController;
+use App\Http\Controllers\Admin\dashboardAdmin;
+use App\Http\Controllers\Admin\PenerbitController;
+
+//User
+use App\Http\Controllers\User\BukuController;
+
 // use App\Http\Livewire\Buku;
 use Illuminate\Support\Facades\Route;
 
@@ -19,10 +33,16 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+//admin
 Route::resource('kategori', KategoriBukuController::class);
 Route::resource('pengarang', PengarangController::class);
 Route::resource('penerbit', PenerbitController::class);
 Route::resource('buku', BukuController::class);
+
+//petugas
+Route::resource('kategoris', KategoriPetugasController::class);
+Route::resource('pengarangs', PengarangPetugasController::class);
+Route::resource('penerbits', PenerbitPetugasController::class);
 
 // Routes accessible to both admin and users
 Route::group(['prefix' => 'account'], function () {
@@ -61,6 +81,15 @@ Route::group(['prefix' => 'account'], function () {
         Route::get('add-review', [RatingController::class, 'index'])->name('tampilan.ratings');
         Route::post('rating', [StarController::class, 'rating'])->name('account.rating');
 
+        //UserStatus->Admin
+        Route::get('pengguna', [PenggunaController::class, 'data'])->name('pengguna.status');
+        Route::get('pengguna-status/{id}', [PenggunaController::class, 'status'])->name('penggunaStatus');
+        Route::get('pengguna-status-tolak/{id}', [PenggunaController::class, 'tolak'])->name('penggunaStatusTolak');
+
+        //UserStatus->Petugas
+        Route::get('penggunaPetugas', [PenggunaPetugasController::class, 'data'])->name('StatusPetugas');
+        Route::get('pengguna-status-petugas/{id}', [PenggunaPetugasController::class, 'status'])->name('penggunaStatusPetugas');
+
         //PEMINJAMAN USER
         Route::get('pinjamuser', [PeminjamanController::class, 'PeminjamanUser'])->name('PeminjamanUser');
         Route::get('pinjam-buku/kan/{id}', [PeminjamanController::class, 'batal'])->name('pinjam-batal');
@@ -80,20 +109,34 @@ Route::group(['prefix' => 'account'], function () {
             'show' => 'tampilan.show',
             'edit' => 'tampilan.edit',
             'update' => 'tampilan.update',
-            'destroy' => 'tampilan.delete',
+            // 'destroy' => 'tampilan.delete',
         ]);
         Route::put('book/{id}', [dashboardAdmin::class, 'update'])->name('book.update');
+        Route::delete('/tampilan/{id}', [PetugasControllers::class, 'destroy'])->name('tampilan.delete');
 
-        Route::resource('lihat', PetugasController::class)->names([
+        Route::resource('lihat', PetugasControllers::class)->names([
             'index' => 'petugas.lihat',
             'create' => 'lihat.create',
             'store' => 'lihat.store',
             'show' => 'lihat.show',
             'edit' => 'lihat.edit',
             'update' => 'lihat.update',
-            'destroy' => 'lihat.delete',
+            // 'destroy' => 'lihat.delete',
         ]);
-        Route::put('book/{id}', [PetugasController::class, 'update'])->name('book.update');
+        Route::put('book/{id}', [PetugasControllers::class, 'update'])->name('book.update');
+        Route::delete('/lihat/{id}', [PetugasControllers::class, 'destroy'])->name('lihat.delete');
+    });
+
+    Route::group(['middleware' => ['auth', 'checkStatus']], function () {
+        Route::resource('dashboard', BukuController::class)->names([
+            'index' => 'account.dashboard',
+        ]);
+        Route::resource('tampilan', dashboardAdmin::class)->names([
+            'index' => 'admin.tampilan',
+        ]);
+        Route::resource('lihat', PetugasControllers::class)->names([
+            'index' => 'petugas.lihat',
+        ]);
     });
 });
 // Route::get('/buku/{id}', Buku::class);

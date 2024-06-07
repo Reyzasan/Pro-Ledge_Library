@@ -32,6 +32,7 @@
                     <th class="col-md-1">ID</th>
                     <th class="col-md-1.5">Judul</th>
                     <th class="col-md-1.5">Kategori</th>
+                    <th class="col-md-1.5">Pengarang</th>
                     <th class="col-md-1.5">Tahun Terbit</th>
                     <th class="col-md-1">Stock</th>
                 </tr>
@@ -56,13 +57,20 @@
                                 <p style="">Data Tidak Tersedia</p>
                             @endif
                         </td>
+                        <td>
+                            @if ($item->pengarangs)
+                                {{ $item->pengarangs->pengarang }}
+                            @else
+                                <p style="">Data Tidak Tersedia</p>
+                            @endif
+                        </td>
                         <td>{{ $item->tahun_terbit }}</td>
                         <td>{{ $item->stock }}</td>
                         <td>
-                            <a href="{{ route('tampilan.show', $item->id) }}" class="btn btn-secondary btn-sm">Detail</a>
-                           <a href="{{ route('tampilan.edit', $item->id) }}" class="btn btn-warning btn-sm">Edit</a>
+                            <a href="{{ route('lihat.show', $item->id) }}" class="btn btn-secondary btn-sm">Detail</a>
+                           <a href="{{ route('lihat.edit', $item->id) }}" class="btn btn-warning btn-sm">Edit</a>
                            <form onsubmit="return confirm('Yakin Data Akan Dihapus')" class="d-inline"
-                               action="{{ route('tampilan.delete', $item->id) }}" method="post">
+                               action="{{ route('lihat.delete', $item->id) }}" method="post">
                                @csrf
                                @method('DELETE')
                                <button type="submit" name="submit" class="btn btn-danger btn-sm">Del</button>
