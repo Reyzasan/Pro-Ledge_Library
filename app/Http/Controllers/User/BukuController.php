@@ -5,6 +5,7 @@ use App\Http\Controllers\Controller;
 use App\Models\buku;
 use App\Models\kategori;
 use App\Models\penerbit;
+use App\Models\pengarang;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -41,16 +42,19 @@ class BukuController extends Controller
     public static function show(string $id)
     {
         $data = buku::find($id);
+        $pengar = pengarang::find($id);
         $item = Peminjaman::find($id);
         $pinjam = Peminjaman::with(['userss', 'bukus'])->where('user',  (Auth::user()->id))->where('buku', $id)->get();
         $kolek = Koleksi::with(['userss', 'bukus','kategoris','penerbits'])->where('user',  (Auth::user()->id))->get();
         // dd($pinjam);
         // dd($kolek);
         //Rating and Comment
-        $ratings = Rating::with('users_r')->where('buku_id', $id)->orderBy('id','asc')->get()->toArray();
+        $ratings = Rating::with('users_r')->where('buku_id',$id)->orderBy('id','asc')->get()->toArray();
         // dd($ratings);
-        // $kolek = Koleksi::with(['userss', 'bukus','kategoris','penerbits'])->where('user',  (Auth::user()->id))->get();
-        // dd($data);
+
+        //mengecek apakah sudah memberikan review
+        $userHasReviewed = Rating::where('buku_id', $id)->where('user_id', Auth::user()->id)->exists();
+        $ratings = Rating::with('users_r')->where('buku_id',$id)->orderBy('id','asc')->get()->toArray();
 
         //Rata-rata
         $ratingSum = Rating::where('buku_id', $id)->sum('rating');
@@ -63,7 +67,7 @@ class BukuController extends Controller
             $avgStarRating = 0;
         }
 
-        return view('buku.bukudetailuser', compact('data', 'item','ratings', 'ratingSum', 'ratingCount', 'avgRating', 'avgStarRating','kolek','pinjam'));
+        return view('user.bukudetailuser', compact('data', 'item','ratings', 'ratingSum', 'ratingCount', 'avgRating', 'avgStarRating','kolek','pinjam','pengar'));
     }
 
     public function koleksi()

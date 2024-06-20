@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>PRO-LEDGE Dashboard</title>
-    <link rel="stylesheet" href="{{asset('dashboard.css')}}">
+    <link rel="stylesheet" href="{{asset('petugas-admin.css')}}">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400..800;1,400..800&family=Jacquard+12&family=Pinyon+Script&display=swap" rel="stylesheet">
@@ -32,17 +32,23 @@
                 </a>
                 <span class="tooltip">pengguna</span>
             </div>
-            <div class="Data">
+            {{-- <div class="Data">
                 <a href="{{route('tampilan.create')}}">
                     <i class='bx bx-bookmark-alt'></i>
                     <span>Tambah Buku</span>
                 </a>
                 <span class="tooltip">Favorit</span>
-            </div>
+            </div> --}}
             <div class="Kategori">
                 <a href="{{ url('kategori') }}">
                     <i class='bx bx-book-reader'></i>
                     <span>Kategori</span>
+                </a>
+            </div>
+            <div class="jenisbuku">
+                <a href="{{ url('jenisbuku') }}">
+                    <i class='bx bx-book-reader'></i>
+                    <span>Jenis Buku</span>
                 </a>
             </div>
             <div class="pengarang">

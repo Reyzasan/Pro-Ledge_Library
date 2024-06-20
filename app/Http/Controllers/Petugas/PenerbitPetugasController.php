@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Petugas;
 use App\Http\Controllers\Controller;
 use App\Models\penerbit;
 use Illuminate\Http\Request;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class PenerbitPetugasController extends Controller
 {
@@ -20,6 +21,16 @@ class PenerbitPetugasController extends Controller
         }
         return view('petugas.penerbit.penerbit')->with('data', $data);
     }
+
+    public function print(Request $request)
+    {
+        $data = Peminjaman::whereIn('status', ['disetujui', 'batalkan','tolak'])->orWhereNull('status')->get();
+        if($request->get('export') == 'pdf'){
+            $pdf = Pdf::loadView('pdf.assets', ['data' => $data]);
+            return $pdf->stream('Laporan_Peminjaman.pdf');
+        }
+    }
+
 
     /**
      * Show the form for creating a new resource.

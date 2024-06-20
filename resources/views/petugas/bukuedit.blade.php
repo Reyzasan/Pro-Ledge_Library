@@ -51,6 +51,18 @@
                 </div>
             </div>
             <div class="mb-3 row">
+                <label for="pengarang" class="col-sm-2 col-form-label">Pengarang</label>
+                <div class="col-sm-10">
+                    <select class="form-control select2" style="width: 100%" name="pengarang" id="pengarang">
+                        <option value>Pilih Pengarang</option>
+                        @foreach ($pengarang as $item)
+                        <option value="{{$item->id}}">{{$item->pengarang}}</option>
+                        @endforeach
+                    </select>
+                </div>
+            </div>
+            {{-- {{dd('pengarang')}} --}}
+            <div class="mb-3 row">
                 <label for="penerbit" class="col-sm-2 col-form-label">penerbit</label>
                 <div class="col-sm-10">
                     <select class="form-control select2" style="width: 100%" name="penerbit" id="penerbit">

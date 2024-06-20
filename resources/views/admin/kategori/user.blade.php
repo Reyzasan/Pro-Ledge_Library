@@ -18,6 +18,9 @@
                  <button class="btn btn-secondary" type="submit">Cari</button>
              </form>
          </div>
+         <div>
+            <a href="{{route('print-kategori')}}?export=pdf" class="btn btn-primary mb-3">Print</a>
+         </div>
 
          <!-- TOMBOL TAMBAH DATA -->
          <div class="pb-3">

@@ -23,28 +23,27 @@ class PenggunaPetugasController extends Controller
     }
 
     public function status($id)
-{
-    // Temukan pengguna berdasarkan ID
-    $blokir = User::findOrFail($id);
+    {
+        // Temukan pengguna berdasarkan ID
+        $blokir = User::findOrFail($id);
 
-    // Update status pengguna menjadi 'ajukan pemblokiran'
-    $blokir->status = 'ajukan pemblokiran';
-    $blokir->save();
+        // Update status pengguna menjadi 'ajukan pemblokiran'
+        $blokir->status = 'ajukan pemblokiran';
+        $blokir->save();
 
-    // // Ambil semua pengguna dengan status 'ajukan pemblokiran' atau status null
-    $data = User::where('role', 'pengguna')
-                ->where(function ($query) {
-                    $query->where('status', 'ajukan pemblokiran')
-                          ->orWhereNull('status');
-                })
-                ->get();
+        // // Ambil semua pengguna dengan status 'ajukan pemblokiran' atau status null
+        $data = User::where('role', 'pengguna')
+                    ->where(function ($query) {
+                        $query->where('status', 'ajukan pemblokiran')
+                            ->orWhereNull('status');
+                    })
+                    ->get();
 
-    // // Ambil semua pengguna dengan peran 'pengguna'
-    // $status = User::where('role', 'pengguna')->get();
+        // // Ambil semua pengguna dengan peran 'pengguna'
+        // $status = User::where('role', 'pengguna')->get();
 
-    // Kembalikan ke view dengan data yang diperlukan
-    return redirect()->route('StatusPetugas');
-    // return view('petugas.pengguna', compact('blokir','data'));
-}
-
+        // Kembalikan ke view dengan data yang diperlukan
+        return redirect()->route('StatusPetugas');
+        // return view('petugas.pengguna', compact('blokir','data'));
+    }
 }

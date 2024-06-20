@@ -21,6 +21,8 @@ return new class extends Migration
             $table->date('kembali')->nullable();
             $table->integer('denda')->nullable();
             $table->string('status')->nullable();
+            $table->enum('detailstatus',['rusak','hilang','-'])->nullable();
+            $table->string('catatan')->nullable();
             $table->timestamps();
 
             $table->engine = 'InnoDB';

@@ -15,30 +15,31 @@
         </div>
     </div>
 @endif
+
 <div class="my-3 p-3 bg-body rounded shadow-sm">
     @csrf
-    <a href="{{ route('account.dashboard') }}" class="btn btn-secondary">
-        << Kembali
-    </a>
+    <div class="d-flex justify-content-between align-items-center mt-4">
+        <a href="{{ route('account.dashboard') }}" class="btn btn-secondary">Kembali</a>
+        <div>
+            <?php $star = 1; ?>
+            @while ($star <= $avgStarRating)
+                <span>&#9733;</span>
+                <?php $star++; ?>
+            @endwhile
+            ({{$avgRating}})
+        </div>
+    </div>
+
     <div class="row mt-3">
         @if ($data->foto)
             <div class="col-md-4 mt-4 mb-3">
-                <img style="max-height: 200px; max-width: 200px" src="{{ url('foto') . '/' . $data->foto }}" alt="">
+                <img style="max-height: 200px; max-width: 200px; border-radius: 20px" src="{{ url('foto') . '/' . $data->foto }}" alt="">
             </div>
         @endif
         <div class="col-md-8">
             <div class="mb-3 row">
                 <div class="col-sm-12" style="font-size: 2rem; font-weight: 500">
                     {{ $data->nama_buku }}
-                </div>
-                <div class="col-sm-12 mt-2">
-                    <?php
-                    $star = 1;
-                    while ($star <= $avgStarRating) {?>
-                        <span>&#9733;</span>
-                       <?php $star++;
-                    }
-                    ?> ({{$avgRating}})
                 </div>
             </div>
             <div class="mb-3 row">
@@ -67,129 +68,56 @@
             </div>
         </div>
 
-        <div class="col-md-12 mt-4 d-flex justify-content-between">
+        <div class="col-md-12 mt-4 d-flex align-items-center">
             @php
-                $koleksiPinjam = $pinjam->where('nama_buku', $item)->where('status', '!=', 'kembali')->first();
+                $koleksiPinjam = $pinjam->firstWhere('buku', $data->id);
             @endphp
-
-            @if (is_null($koleksiPinjam))
-                <a href="{{ route('account.peminjaman', $data->id) }}" class="btn btn-success">Pinjam</a>
-            @elseif ($koleksiPinjam->status == 'kembali')
-                <a href="{{ route('account.peminjaman', $data->id) }}" class="btn btn-success">Pinjam</a>
+            @if (is_null($koleksiPinjam) || in_array($koleksiPinjam->status, ['kembali', 'batal']))
+                <a href="{{ route('account.peminjaman', $data->id) }}" class="badge bg-success" style="padding: 12px; font-size: 16px; text-decoration: none">Pinjam</a>
             @elseif ($koleksiPinjam->status == 'disetujui')
-                <span class="badge bg-success">Disetujui</span>
-            @elseif ($koleksiPinjam->status == 'batal')
-                <a href="{{ route('account.peminjaman', $data->id) }}" class="btn btn-success">Pinjam</a>
+                <span class="badge bg-success" style="padding: 10px; font-size: 16px">Disetujui</span>
             @elseif ($koleksiPinjam->status == 'batalkan')
-                <span class="badge bg-danger">Dibatalkan</span>
+                <span class="badge bg-danger" style="padding: 10px; font-size: 16px">Dibatalkan</span>
             @elseif ($koleksiPinjam->status == 'tolak')
-                <span class="badge bg-danger">Ditolak</span>
-            @elseif (is_null($data->status))
-                <span class="badge bg-warning">Belum Disetujui</span>
+                <span class="badge bg-danger" style="padding: 10px; font-size: 16px">Ditolak</span>
+            @elseif (is_null($koleksiPinjam->status))
+                <span class="badge bg-warning" style="padding: 10px; font-size: 16px">Belum Disetujui</span>
             @endif
-            {{-- @endforeach --}}
-            {{-- {{dd($pinjam)}} --}}
-            {{-- <a href="{{ route('account.peminjaman', $data->id) }}" class="btn btn-success">Pinjam</a>
-                @if ($data->status == 'disetujui')
-                    <span class="badge bg-success">Disetujui</span>
-                @elseif ($data->status == 'batal')
-                    <span class="badge bg-danger">Dibatalkan</span>
-                @elseif (is_null($data->status))
-                    <span class="badge bg-warning">Belum Disetujui</span>
-                @elseif ($data->status == 'tolak')
-                    <span class="badge bg-danger">Ditolak</span>
-                @endif --}}
-        </div>
-        <div>
-            {{-- {{dd($kolek)}} --}}
-            @php
-                $koleksiItem = $kolek->firstWhere('nama_buku', $data->id);
-            @endphp
-            {{-- {{dd($data)}} --}}
-            @if (is_null($koleksiItem) || $koleksiItem->status == 'hapus')
-                <form action="{{ route('account.post', $data->id) }}" method="POST" style="display:inline;">
-                    @csrf
-                    <button type="submit" class="btn btn-success">
-                        Koleksi
-                    </button>
-                </form>
-            @elseif ($koleksiItem->status == 'koleksi')
-                <form action="{{ route('account.post-batal', $data->id) }}" method="POST" style="display:inline;">
-                    @csrf
-                    <button type="submit" class="btn btn-danger btn-sm">
-                        Hapus Koleksi
-                    </button>
-                </form>
-            @endif
-            {{-- <form action="{{ route('account.post', $data->id) }}" method="POST" style="display:inline;">
-                @csrf
-                <button type="submit" class="btn btn-success">
-                    Koleksi
-                </button>
-            </form>
-            @foreach ($kolek as $item)
-                @if (is_null($kolek->status) || $kolek->status == 'hapus')
-                    <form action="{{ route('account.post', $kolek->id) }}" method="POST" style="display:inline;">
+
+            <div style="margin-left: 10px">
+                @php
+                    $koleksiItem = $kolek->firstWhere('nama_buku', $data->id);
+                @endphp
+                @if (is_null($koleksiItem) || $koleksiItem->status == 'hapus')
+                    <form action="{{ route('account.post', $data->id) }}" method="POST" style="display:inline;">
                         @csrf
-                        <button type="submit" class="btn btn-success">
+                        <button type="submit" class="btn btn-success" style="font-weight:900">
                             Koleksi
                         </button>
                     </form>
-                @elseif ($kolek->status == 'koleksi')
-                    <form action="{{ route('account.post-batal', $kolek->id) }}" method="POST" style="display:inline;">
+                @elseif ($koleksiItem->status == 'koleksi')
+                    <form action="{{ route('account.post-batal', $data->id) }}" method="POST" style="display:inline;">
                         @csrf
-                        <button type="submit" class="btn btn-danger btn-sm">
-                             Hapus Koleksi
+                        <button type="submit" class="btn btn-danger" style="font-weight:900">
+                            Hapus Koleksi
                         </button>
                     </form>
                 @endif
-            @endforeach --}}
-
-            {{-- {{dd($kolek)}} --}}
-
+            </div>
         </div>
     </div>
+
     <div class="mt-4">
         <ul class="nav nav-tabs" id="productDetail" role="tablist">
             <li class="nav-item" role="presentation">
                 <button class="nav-link active" id="review-tab" data-bs-toggle="tab" data-bs-target="#review" type="button" role="tab" aria-controls="review" aria-selected="true">Review</button>
             </li>
         </ul>
+        {{-- {{dd($ratings)}} --}}
         <div class="tab-content" id="productDetailContent">
             <div class="tab-pane fade show active" id="review" role="tabpanel" aria-labelledby="review-tab">
                 <div class="container mt-4">
                     <div class="row">
-                        <div class="col-md-6">
-                            <div class="mb-3">
-                                <h4>Write a Review</h4>
-                                <form method="POST" action="{{ route('account.rating') }}" name="ratingForm" id="ratingForm">
-                                    @csrf
-                                    <input type="hidden" name="buku_id" value="{{ $data->id }}">
-                                    <div class="form-group">
-                                        <label style="color: rgb(145, 145, 36)">Rating:</label>
-                                        <span class="star-rating">
-                                            <label for="rate-1" style="--i:1"><i class="fa-solid fa-star"></i></label>
-                                            <input type="radio" name="rating" id="rate-1" value="1">
-                                            <label for="rate-2" style="--i:2"><i class="fa-solid fa-star"></i></label>
-                                            <input type="radio" name="rating" id="rate-2" value="2">
-                                            <label for="rate-3" style="--i:3"><i class="fa-solid fa-star"></i></label>
-                                            <input type="radio" name="rating" id="rate-3" value="3">
-                                            <label for="rate-4" style="--i:4"><i class="fa-solid fa-star"></i></label>
-                                            <input type="radio" name="rating" id="rate-4" value="4">
-                                            <label for="rate-5" style="--i:5"><i class="fa-solid fa-star"></i></label>
-                                            <input type="radio" name="rating" id="rate-5" value="5">
-                                        </span>
-                                    </div>
-                                    <div class="form-group">
-                                        <label style="margin-top: 30px">Your Review</label>
-                                        <textarea name="review" class="form-control" placeholder="Write Your Review" style="width: 100%; height: 100px"></textarea>
-                                    </div>
-                                    <div class="form-group mt-2">
-                                        <button type="submit" class="btn btn-primary">Submit</button>
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
                         <div class="col-md-6">
                             <div class="mb-3">
                                 <h4>Users Review</h4>
@@ -223,6 +151,7 @@
         </div>
     </div>
 </div>
+
 
 <style>
     .star-rating {

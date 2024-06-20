@@ -51,6 +51,28 @@
                 </div>
             </div>
             <div class="mb-3 row">
+                <label for="jenisbuku" class="col-sm-2 col-form-label">Jenis Buku</label>
+                <div class="col-sm-10">
+                    <select class="form-control select2" style="width: 100%" name="jenisbuku" id="jenisbuku">
+                        <option disabled value>Pilih Jenis Buku</option>
+                        @foreach ($jenisbuku as $item)
+                        <option value="{{ $item->id }}">{{ $item->jenisbuku }}</option>
+                        @endforeach
+                    </select>
+                </div>
+            </div>
+            <div class="mb-3 row">
+                <label for="pengarang" class="col-sm-2 col-form-label">Pengarang</label>
+                <div class="col-sm-10">
+                    <select class="form-control select2" style="width: 100%" name="pengarang" id="pengarang">
+                        <option disabled value>Pilih pengarang</option>
+                        @foreach ($pengarang as $item)
+                            <option value="{{ $item->id }}">{{ $item->pengarang }}</option>
+                        @endforeach
+                    </select>
+                </div>
+            </div>
+            <div class="mb-3 row">
                 <label for="penerbit" class="col-sm-2 col-form-label">penerbit</label>
                 <div class="col-sm-10">
                     <select class="form-control select2" style="width: 100%" name="penerbit" id="penerbit">
@@ -85,6 +107,14 @@
                 <div class="col-sm-10">
                     <input type="text" class="form-control" name='harga' value="{{ $data->harga }}"
                         id="harga">
+                </div>
+            </div>
+            <div class="mb-3 row">
+                <label for="deskripsi" class="col-sm-2 col-form-label">Blurb</label>
+                <div class="col-sm-10">
+                    {{-- <input type="text" class="form-control" name="deskripsi" value="{{ Session::get('deskripsi') }}"
+                        id="deskripsi" style="width: 100%; height: 100px" placeholder="Deskripsi"> --}}
+                    <textarea name="deskripsi" class="form-control" placeholder="Deskripsi" style="width: 100%; height: 100px"></textarea>
                 </div>
             </div>
             <div class="mb-3 row">

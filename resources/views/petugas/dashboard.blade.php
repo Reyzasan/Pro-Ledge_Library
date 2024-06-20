@@ -12,13 +12,16 @@
     <div class="my-3 p-3 bg-body rounded shadow-sm">
         <!-- FORM PENCARIAN -->
         <div class="pb-3">
-            <form class="d-flex" action="{{ url('buku') }}" method="get">
+            <form class="d-flex" action="{{ url('petugas') }}" method="get">
                 <input class="form-control me-1" type="search" name="katakunci" value="{{ Request::get('katakunci') }}"
                     placeholder="Masukkan kata kunci" aria-label="Search">
                 <button class="btn btn-secondary" type="submit">Cari</button>
             </form>
         </div>
-
+        <div>
+            <a href="{{route('print-buku-petugas')}}?export=pdf" class="btn btn-primary mb-3">Print</a>
+            <a href='{{route('lihat.create')}}' class="btn btn-primary mb-3">Tambah Data</a>
+        </div>
         <!-- TOMBOL TAMBAH DATA -->
         {{-- <div class="pb-3">
             <a href='{{ url('buku/create') }}' class="btn btn-primary">+ Tambah Data</a>

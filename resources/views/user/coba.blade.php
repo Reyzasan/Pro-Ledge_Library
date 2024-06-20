@@ -1,0 +1,93 @@
+@extends('desain.sidebar')
+@section('konten')
+<h1>hallo</h1>
+<div>
+    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#detailModal{{ $item->id }}" style="width: 100px; margin-top: 20px">
+        Review
+    </button>
+</div>
+{{dd($ratingskeun)}}
+<div class="modal fade" id="detailModal{{ $item->id }}" tabindex="-1" aria-labelledby="detailModalLabel{{ $item->id }}" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            {{dd($item)}}
+            <form action="{{ route('account.rating', $item->id) }}" method="POST">
+                @csrf
+                <div class="modal-header">
+                    <h5 class="modal-title" id="detailModalLabel{{ $item->id }}">Review</h5>
+                    <button type="button" class="btn-close" item-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                {{-- {{dd($item)}} --}}
+                <div class="modal-body">
+                    {{-- <p><strong>Username:</strong> {{ $item->userss->name }}</p> --}}
+                    <form method="POST" action="{{ route('account.rating') }}" name="ratingForm" id="ratingForm">
+                        <p><strong>Buku:</strong> {{ $item->nama_buku }}</p>
+                        {{-- <p><strong>Pengarang:</strong> {{ $item->pengarangs->pengarang }}</p> --}}
+                        @csrf
+                        <input type="hidden" name="peminjaman_id" value="{{ $item->id }}">
+                        <input type="hidden" name="buku_id" value="{{ $item->buku_id}}">
+                        <div class="form-group">
+                            <label style="color: rgb(145, 145, 36)">Rating:</label>
+                            <span class="star-rating">
+                                <label for="rate-1" style="--i:1"><i class="fa-solid fa-star"></i></label>
+                                <input type="radio" name="rating" id="rate-1" value="1">
+                                <label for="rate-2" style="--i:2"><i class="fa-solid fa-star"></i></label>
+                                <input type="radio" name="rating" id="rate-2" value="2">
+                                <label for="rate-3" style="--i:3"><i class="fa-solid fa-star"></i></label>
+                                <input type="radio" name="rating" id="rate-3" value="3">
+                                <label for="rate-4" style="--i:4"><i class="fa-solid fa-star"></i></label>
+                                <input type="radio" name="rating" id="rate-4" value="4">
+                                <label for="rate-5" style="--i:5"><i class="fa-solid fa-star"></i></label>
+                                <input type="radio" name="rating" id="rate-5" value="5">
+                            </span>
+                        </div>
+                        <div class="form-group">
+                            <label style="margin-top: 30px">Your Review</label>
+                            <textarea name="review" class="form-control" placeholder="Write Your Review" style="width: 100%; height: 100px"></textarea>
+                        </div>
+                        {{-- <div class="form-group mt-2">
+                            <button type="submit" class="btn btn-primary">Submit</button>
+                        </div> --}}
+                    </form>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary">Kirim</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+<style>
+    .star-rating {
+        white-space: nowrap;
+    }
+    .star-rating [type="radio"] {
+        appearance: none;
+    }
+    .star-rating i {
+        font-size: 1.2em;
+        transition: 0.3s;
+    }
+
+    .star-rating label:is(:hover, :has(~ :hover)) i {
+        transform: scale(1.35);
+        color: #fffdba;
+        animation: jump 0.5s calc(0.3s + (var(--i) - 1) * 0.15s) alternate infinite;
+    }
+    .star-rating label:has(~ :checked) i {
+        color: #faec1b;
+        text-shadow: 0 0 2px #ffffff, 0 0 10px #ffee58;
+    }
+
+    @keyframes jump {
+        0%, 50% {
+            transform: translateY(0) scale(1.35);
+        }
+        100% {
+            transform: translateY(-15%) scale(1.35);
+        }
+    }
+</style>
+
+@endsection

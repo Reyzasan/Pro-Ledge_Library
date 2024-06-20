@@ -26,7 +26,6 @@
     <div>
         <div class="pb-3">
             <a href="{{route('pinjam-print')}}?export=pdf" class="btn btn-primary mb-3">Print</a>
-            <a href='{{ url('pengarang/create') }}' class="btn btn-primary mb-3">Tambah Data</a>
         </div>
     </div>
 

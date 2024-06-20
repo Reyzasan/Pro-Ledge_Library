@@ -10,7 +10,7 @@ use Carbon\Carbon;
 class buku extends Model
 {
     use HasFactory;
-    protected $fillable = ['nama_buku', 'kategori', 'pengarang','tahun_terbit','penerbit','stock','foto','harga'];
+    protected $fillable = ['nama_buku', 'kategori', 'pengarang','tahun_terbit','penerbit','stock','foto','harga','jenisbuku','deskripsi'];
     protected $table = 'buku';
     public $timestamps = false;
 
@@ -26,6 +26,10 @@ class buku extends Model
     public function pengarangs()
     {
         return $this->belongsTo(pengarang::class, 'pengarang', 'id');
+    }
+    public function jenisbukus()
+    {
+        return $this->belongsTo(jenisbuku::class, 'jenisbuku', 'id');
     }
 
     // public function koleksis()

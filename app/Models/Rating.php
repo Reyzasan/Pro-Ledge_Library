@@ -16,6 +16,10 @@ class Rating extends Model
 
     public function buku_r()
     {
-        return $this->belongsTo(buku::class, 'buku_id'); 
+        return $this->belongsTo(buku::class, 'buku_id');
+    }
+    public function pinjam_r()
+    {
+        return $this->belongsTo(Peminjaman::class, 'peminjaman_id');
     }
 }

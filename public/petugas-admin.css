@@ -1,0 +1,121 @@
+:root {
+    --primary: rgb(209, 196, 7);
+    --background: rgb(65, 150, 91);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    outline: none;
+    border: none;
+    text-decoration: none;
+}
+
+body {
+    font-family: 'EB Garamond', serif;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    background-color: #f8f9fa;
+}
+
+.sidebar {
+    position: fixed;
+    font-family: 'EB Garamond', serif;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 240px;
+    background: rgb(29, 119, 44);
+    padding-top: 20px;
+    z-index: 1000;
+}
+
+.sidebar .logo-detail {
+    /* display: flex; */
+    align-items: center;
+    font-size: 25px;
+    color: rgb(54, 54, 12);
+    margin-bottom: 3rem;
+    padding: 0 20px;
+}
+
+.sidebar .logo-detail i {
+    font-size: 40px;
+    margin-right: 10px;
+}
+
+.sidebar .nav-links {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+.sidebar .nav-links .logout{
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.sidebar .nav-links div {
+    margin-bottom: 7px;
+}
+
+.sidebar .nav-links a {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    color: white;
+    padding: 10px 20px;
+    transition: 0.3s;
+}
+
+.sidebar .nav-links a:hover {
+    background: rgb(103, 158, 115);
+    border-radius: 5px;
+}
+
+.sidebar .nav-links i {
+    font-size: 25px; /* Mengubah ukuran ikon */
+    margin-right: 15px;
+}
+
+.sidebar .nav-links span {
+    font-size: 20px;
+}
+
+.sidebar .tooltip {
+    position: absolute;
+    height: 35px;
+    width: 122px;
+    background: white;
+    top: 50%;
+    transform: translateY(-50%);
+    border-radius: 6px;
+    line-height: 35px;
+    text-align: center;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+    display: none;
+}
+
+.sidebar .nav-links div:hover .tooltip {
+    display: block;
+}
+
+.home-section {
+    position: relative;
+    font-family: 'EB Garamond', serif;
+    left: 220px;
+    width: calc(100% - 240px); /* Menyesuaikan lebar content dengan sidebar */
+    padding: 20px;
+}
+
+.table img {
+    max-width: 100px;
+    max-height: 100px;
+    border-radius: 10px;
+}
+
+.table th, .table td {
+    vertical-align: middle;
+}

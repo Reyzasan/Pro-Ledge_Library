@@ -6,9 +6,11 @@ use App\Models\buku;
 use App\Models\kategori;
 use App\Models\penerbit;
 use App\Models\pengarang;
+use App\Models\jenisbuku;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
 use Carbon\Carbon;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class dashboardAdmin extends Controller
 {
@@ -20,6 +22,7 @@ class dashboardAdmin extends Controller
         // $data = buku::with('kategori')->get();
         // $data = buku::find($id);
         $kategori = kategori::all();
+        $jenisbuku = jenisbuku::all();
         $penerbit = penerbit::all();
         $pengarang = pengarang::all();
         // dd($data);
@@ -35,15 +38,25 @@ class dashboardAdmin extends Controller
     }
 
 
+    public function print(Request $request)
+    {
+        $data = Peminjaman::whereIn('status', ['disetujui', 'batalkan','tolak'])->orWhereNull('status')->get();
+        if($request->get('export') == 'pdf'){
+            $pdf = Pdf::loadView('pdf.assets', ['data' => $data]);
+            return $pdf->stream('Laporan_Peminjaman.pdf');
+        }
+    }
+
     /**
      * Show the form for creating a new resource.
      */
     public function create()
     {
         $kategori = kategori::all();
+        $jenisbuku = jenisbuku::all();
         $penerbit = penerbit::all();
         $pengarang = pengarang::all();
-        return view('admin.createbuku',compact('kategori','penerbit','pengarang'));
+        return view('admin.createbuku',compact('kategori','penerbit','pengarang','jenisbuku'));
     }
 
     /**
@@ -54,6 +67,8 @@ class dashboardAdmin extends Controller
     $request->validate([
         'nama_buku' => 'required',
         'kategori' => 'required',
+        'jenisbuku' => 'required',
+        'deskripsi' => 'required',
         'penerbit' => 'required',
         'pengarang' => 'required',
         'harga' => 'required',
@@ -63,6 +78,8 @@ class dashboardAdmin extends Controller
     ], [
         'nama_buku.required' => 'Nama buku wajib diisi!',
         'kategori.required' => 'Kategori wajib diisi!',
+        'jenisbuku.required' => 'jenisbuku wajib diisi!',
+        'deskripsi.required' => 'deskripsi wajib diisi!',
         'penerbit.required' => 'Penerbit wajib diisi!',
         'pengarang.required' => 'pengarang wajib diisi!',
         'harga.required' => 'Harga wajib diisi!',
@@ -82,6 +99,8 @@ class dashboardAdmin extends Controller
         // 'id' => $request->id,
         'nama_buku' => $request->nama_buku,
         'kategori' => $request->kategori,
+        'jenisbuku' => $request->jenisbuku,
+        'deskripsi' => $request->deskripsi,
         'penerbit' => $request->penerbit,
         'pengarang' => $request->pengarang,
         'harga' => $request->harga,
@@ -110,10 +129,11 @@ class dashboardAdmin extends Controller
     public function edit(string $id)
     {
         $kategori = kategori::all();
+        $jenisbuku = jenisbuku::all();
         $penerbit = penerbit::all();
-        $pengarang = penerbit::all();
+        $pengarang = pengarang::all();
         $data = buku::where('id',$id)->first();
-        return view('admin.bukuedit',compact('kategori','penerbit'))->with('data',$data);
+        return view('admin.bukuedit',compact('kategori','penerbit','pengarang','jenisbuku'))->with('data',$data);
     }
 
     /**
@@ -124,6 +144,8 @@ class dashboardAdmin extends Controller
         $request->validate([
             'nama_buku'=>'required',
             'kategori'=>'required',
+            'deskripsi'=>'required',
+            'jenisbuku'=>'required',
             'penerbit'=>'required',
             'pengarang'=>'required',
             'harga'=>'required',
@@ -133,6 +155,8 @@ class dashboardAdmin extends Controller
         ],[
             'nama_buku.required'=>'nama_buku wajib diisi!',
             'kategori.required'=>'kategori wajib diisi!',
+            'deskripsi.required'=>'deskripsi wajib diisi!',
+            'jenisbuku.required'=>'jenisbuku wajib diisi!',
             'penerbit.required'=>'penerbit wajib diisi!',
             'pengarang.required'=>'pengarang wajib diisi!',
             'harga.required'=>'harga wajib diisi!',
@@ -146,6 +170,8 @@ class dashboardAdmin extends Controller
         $tahun_terbit = Carbon::createFromFormat('Y', $request->tahun_terbit)->startOfYear()->format('Y');        $data = [
             'nama_buku'=>$request->nama_buku,
             'kategori'=>$request->kategori,
+            'jenisbuku'=>$request->jenisbuku,
+            'deskripsi'=>$request->deskripsi,
             'penerbit'=>$request->penerbit,
             'pengarang'=>$request->pengarang,
             'harga'=>$request->harga,

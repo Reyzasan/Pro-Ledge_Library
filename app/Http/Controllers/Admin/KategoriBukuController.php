@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\kategori;
 use Illuminate\Http\Request;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class KategoriBukuController extends Controller
 {
@@ -19,6 +20,15 @@ class KategoriBukuController extends Controller
             $data = kategori::orderBy('id','desc',)->paginate();
         }
         return view('Admin.kategori.user')->with('data', $data);
+    }
+
+    public function print(Request $request)
+    {
+        $data = Peminjaman::whereIn('status', ['disetujui', 'batalkan','tolak'])->orWhereNull('status')->get();
+        if($request->get('export') == 'pdf'){
+            $pdf = Pdf::loadView('pdf.assets', ['data' => $data]);
+            return $pdf->stream('Laporan_Peminjaman.pdf');
+        }
     }
 
     /**

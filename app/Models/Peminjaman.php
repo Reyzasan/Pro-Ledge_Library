@@ -21,6 +21,15 @@ class Peminjaman extends Model
         return $this->belongsTo('App\Models\User','user');
     }
 
+    public function pengarangs()
+    {
+        return $this->belongsTo('App\Models\pengarang','pengarang');
+    }
+    public function kategoris()
+    {
+        return $this->belongsTo('App\Models\kategori','kategori');
+    }
+
     // public function status_s()
     // {
     //     return $this->belongsTo('App\Models\Status','status','kode')->withDefault(['nama' => 'Menunggu Verifikasi']);

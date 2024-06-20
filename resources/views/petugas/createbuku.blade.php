@@ -17,13 +17,6 @@
         <div class="my-3 p-3 bg-body rounded shadow-sm">
             <a href="{{ route('petugas.lihat')}}" class="btn btn-secondary"><< Kembali</a>
             <h4 style="margin-top: 20px; margin-bottom: 30px; text-align:center">Tambah Data Buku</h4>
-            {{-- <a href="{{url('buku')}}" class="btn btn-secondary"><< Kembali</a> --}}
-            {{-- <div class="mb-3 row">
-                <label for="id" class="col-sm-2 col-form-label">ID</label>
-                <div class="col-sm-10">
-                    <input type="number" class="form-control" name='id' value="{{ Session::get('id') }}" id="id">
-                </div>
-            </div> --}}
             <div class="mb-3 row">
                 <label for="foto" class="col-sm-2 col-form-label">Image</label>
                 <div class="col-sm-10">
@@ -35,6 +28,17 @@
                 <div class="col-sm-10">
                     <input type="text" class="form-control" name="nama_buku" value="{{ Session::get('nama_buku') }}"
                         id="nama_buku">
+                </div>
+            </div>
+            <div class="mb-3 row">
+                <label for="jenisbuku" class="col-sm-2 col-form-label">Jenis Buku</label>
+                <div class="col-sm-10">
+                    <select class="form-control select2" style="width: 100%" name="jenisbuku" id="jenisbuku">
+                        <option value>Pilih Jenis Buku</option>
+                        @foreach ($jenisbuku as $item)
+                        <option value="{{$item->id}}">{{$item->jenisbuku}}</option>
+                        @endforeach
+                    </select>
                 </div>
             </div>
             <div class="mb-3 row">
@@ -96,10 +100,17 @@
                 </div>
             </div>
             <div class="mb-3 row">
+                <label for="deskripsi" class="col-sm-2 col-form-label">Blurb</label>
+                <div class="col-sm-10">
+                    {{-- <input type="text" class="form-control" name="deskripsi" value="{{ Session::get('deskripsi') }}"
+                        id="deskripsi" style="width: 100%; height: 100px" placeholder="Deskripsi"> --}}
+                    <textarea name="deskripsi" class="form-control" placeholder="Deskripsi" style="width: 100%; height: 100px"></textarea>
+                </div>
+            </div>
+            <div class="mb-3 row">
                 <label for="kategori" class="col-sm-2 col-form-label"></label>
                 <div class="col-sm-10"><button type="submit" class="btn btn-primary" name="submit">SIMPAN</button></div>
             </div>
+        </div>
     </form>
-    </div>
-    <!-- AKHIR FORM -->
 @endsection

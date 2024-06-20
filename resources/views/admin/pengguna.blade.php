@@ -23,10 +23,20 @@
             <button class="btn btn-secondary" type="submit">Cari</button>
         </form>
     </div>
+    {{-- <div>
+        <a href="{{route('print-data-pengguna')}}?export=pdf" class="btn btn-primary mb-3">Print</a>
+     </div> --}}
     <div>
-        <div class="pb-3">
+        <h4 style="margin-top: 20px; margin-bottom: 20px; text-align:center">Data Pengajuan Pemblokiran</h4>
+        <div class="pb-1">
             <a href="{{route('pinjam-print')}}?export=pdf" class="btn btn-primary mb-3">Print</a>
-            <a href='{{ url('pengarang/create') }}' class="btn btn-primary mb-3">Tambah Data</a>
+            <a href='{{ url('tambahpengguna/create') }}' class="btn btn-primary mb-3">Tambah Data</a>
+        </div>
+        <div class="pb-3">
+            <a href='{{ route('pengguna.status') }}' class="btn btn-success mb-3">All</a>
+            <a href='{{ route('user.status') }}' class="btn btn-success mb-3">Pengguna</a>
+            <a href='{{ route('petugas.status') }}' class="btn btn-success mb-3">Petugas</a>
+            <a href='{{ route('admin.status') }}' class="btn btn-success mb-3">Admin</a>
         </div>
     </div>
 

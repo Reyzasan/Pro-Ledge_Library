@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>PRO-LEDGE Dashboard</title>
-    <link rel="stylesheet" href="{{asset('dashboard.css')}}">
+    <link rel="stylesheet" href="{{asset('petugas-admin.css')}}">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400..800;1,400..800&family=Jacquard+12&family=Pinyon+Script&display=swap" rel="stylesheet">
@@ -15,7 +15,7 @@
     <div class="sidebar">
         <div class="logo-detail">
             <i class='bx bx-menu-alt-left'></i>
-            <span>Pro-Ledge Petugas</span>
+            <span>Pro-Ledge</span>
         </div>
         <ul class="nav-links">
             <div class="dashboard">
@@ -33,9 +33,9 @@
                 <span class="tooltip">pengguna</span>
             </div>
             <div class="tambahdata">
-                <a href="{{route('lihat.create')}}">
+                <a href="{{url('jenisbukus')}}">
                     <i class='bx bx-bookmark-alt'></i>
-                    <span>Tambah Data</span>
+                    <span>JenisBuku</span>
                 </a>
                 <span class="tooltip">tambahdata</span>
             </div>
@@ -69,7 +69,7 @@
                     <span>Pengembalian</span>
                 </a>
             </div>
-            <div class="logout" style="margin-top: 4rem">
+            <div class="logout" style="margin-top: 1rem">
                 <a href="{{ route('account.logout') }}" class="logout-link">
                     <i class='bx bxs-door-open'></i>
                     <span>Log Out</span>

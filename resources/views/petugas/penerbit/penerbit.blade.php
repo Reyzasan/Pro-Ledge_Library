@@ -18,9 +18,9 @@
                  <button class="btn btn-secondary" type="submit">Cari</button>
              </form>
          </div>
-
-         <!-- TOMBOL TAMBAH DATA -->
-         <div class="pb-3">
+        <!-- TOMBOL TAMBAH DATA -->
+        <div class="pb-3">
+             <a href="{{route('print-penerbit-petugas')}}?export=pdf" class="btn btn-primary">Print</a>
              <a href='{{ url('penerbits/create') }}' class="btn btn-primary">Tambah Data</a>
          </div>
 

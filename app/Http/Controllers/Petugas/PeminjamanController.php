@@ -12,11 +12,31 @@ use Barryvdh\DomPDF\Facade\Pdf;
 
 class PeminjamanController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
         $title = 'Halaman Peminjaman Buku';
         $data = Peminjaman::whereIn('status', ['disetujui', 'batalkan','tolak'])->orWhereNull('status')->get();
-        return view('petugas.peminjaman', compact('title', 'data'));
+        $katakunci = $request->katakunci;
+        $bulan = $request->bulan;
+        // dd($bulan);
+        $query = Peminjaman::with(['kategoris', 'userss', 'bukus']);
+
+        if (!empty($katakunci)) {
+            $query->where(function ($q) use ($katakunci) {
+                $q->where('id', 'like', "%$katakunci%")
+                ->orWhere('nama_buku', 'like', "%$katakunci%")
+                ->orWhere('kategori', 'like', "%$katakunci%");
+            });
+        }
+
+        if (!empty($bulan)) {
+            $query->whereMonth('tangal_peminjaman', $bulan);
+        }
+
+        $nilai = $query->orderBy('id', 'desc')->paginate();
+        // ddg
+
+        return view('petugas.peminjaman', compact('title', 'data', 'katakunci', 'bulan','nilai'));
     }
 
     public function print(Request $request)
@@ -55,7 +75,10 @@ class PeminjamanController extends Controller
             ->where('buku', $id)
             ->where(function ($query) {
                 $query->whereIn('status', ['disetujui', 'batalkan', 'tolak'])
+                ->orWhere(function ($q) {
+                    $q->whereIn('detailstatus', ['rusak', 'hilang'])
                       ->orWhereNull('status');
+                });
             })
             ->first();
         if ($BukuBatas) {
@@ -63,6 +86,7 @@ class PeminjamanController extends Controller
         }
         // Cek ketersediaan stok buku
         $cek = DB::table('buku')->where('id', $id)->where('stock', '>', 0)->count();
+        // $status = DB::table('table_peminjaman')->where('id', $id)->where('status', 'terlambat')->whereIn('detailstatus',['rusak','hilang']);
         if ($cek > 0) {
             DB::table('table_peminjaman')->insert([
                 'buku' => $id,
@@ -74,10 +98,10 @@ class PeminjamanController extends Controller
                 'kembali' => null,
             ]);
 
-            $buku = DB::table('buku')->where('id', $id)->first();
-            $stock_baru = $buku->stock - 1;
+            // $buku = DB::table('buku')->where('id', $id)->first();
+            // $stock_baru = $buku->stock - 1;
 
-            DB::table('buku')->where('id', $id)->update(['stock' => $stock_baru]);
+            // DB::table('buku')->where('id', $id)->update(['stock' => $stock_baru]);
             return redirect()->back()->with('success', 'Anda berhasil meminjam');
         } else {
             return redirect()->back()->with('gagal', 'Buku Tidak Tersedia');
@@ -89,6 +113,17 @@ class PeminjamanController extends Controller
         $peminjaman = Peminjaman::findOrFail($id);
         $item = Peminjaman::find($id);
         $peminjaman->status = 'disetujui';
+        $id_buku = $item->buku;
+
+        $buku = Buku::find($id_buku);
+
+        if (!$buku) {
+            return redirect()->back()->with('error', 'Peminjaman Tidak Valid');
+        }
+
+        $buku->stock -= 1;
+        $buku->save();
+
         $peminjaman->tangal_peminjaman = Carbon::now()->toDateString();
         $peminjaman->tanggal_pengembalian = Carbon::now()->addDays(10);
         $peminjaman->save();
@@ -105,6 +140,16 @@ class PeminjamanController extends Controller
     {
         $peminjaman = Peminjaman::findOrFail($id);
         $peminjaman->status = 'batalkan';
+        $id_buku = $peminjaman->buku;
+
+        $buku = Buku::find($id_buku);
+
+        if (!$buku) {
+            return redirect()->back()->with('error', 'Peminjaman Tidak Valid');
+        }
+
+        $buku->stock += 1;
+        $buku->save();
         $peminjaman->save();
 
         return redirect()->route('pinjam-buku')->with('error', 'Peminjaman Dibatalkan');

@@ -19,8 +19,9 @@
              </form>
          </div>
 
-         <!-- TOMBOL TAMBAH DATA -->
-         <div class="pb-3">
+        <!-- TOMBOL TAMBAH DATA -->
+        <div class="pb-3">
+             <a href="{{route('print-pengarang-petugas')}}?export=pdf" class="btn btn-primary">Print</a>
              <a href='{{ url('pengarangs/create') }}' class="btn btn-primary">Tambah Data</a>
          </div>
 

@@ -17,6 +17,7 @@ return new class extends Migration
             $table->integer('rating');
             $table->integer('user_id');
             $table->integer('buku_id');
+            $table->integer('peminjaman_id');
             $table->tinyInteger('status');
             $table->timestamps();
         });

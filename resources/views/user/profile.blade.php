@@ -18,170 +18,68 @@
 <div class="my-3 p-3 bg-body rounded shadow-sm">
     @csrf
     <a href="{{ route('account.dashboard') }}" class="btn btn-secondary">
-        << Kembali
+        &lt;&lt; Kembali
     </a>
+</div>
+
+<form action="{{ route('profile-edit', $userprofile->id) }}" method="POST" enctype="multipart/form-data">
+    @csrf
     <div class="row mt-3">
-        @if ($userprofile)
-            @if ($userprofile->picture)
-                @php
-                    $imagePath = url('foto') . '/' . $userprofile->picture;
-                @endphp
-                <div class="col mt-4 mb-3">
-                    <img style="max-height: 200px; max-width: 200px" src="{{ $imagePath }}" alt="">
-                    {{-- <p>{{ $imagePath }}</p> <!-- Debug output --> --}}
-                    <div class="mb-3 row">
-                        <div class="col-sm-10">
-                            {{ $userinfo->name }}
-                        </div>
-                    </div>
-                    <div class="mb-3 row">
-                        <div class="col-sm-10">
-                            {{ $userinfo->email }}
-                        </div>
+        @if ($userprofile && $userprofile->picture)
+            @php
+                $imagePath = url('foto') . '/' . $userprofile->picture;
+            @endphp
+            <div class="col-md-4 mt-4 mb-3">
+                <img style="max-height: 200px; max-width: 200px; border-radius: 20px" src="{{ $imagePath }}" alt="">
+                {{-- <input type="file" class="form-control" name="picture" id="picture"> --}}
+                <div class="mb-1 row" style="text-align: center">
+                    <div class="col-sm-10">
+                        {{ $userinfo->email }}
                     </div>
                 </div>
-            @endif
+            </div>
         @endif
+        {{-- {{dd($userprofile)}} --}}
         <div class="col-md-8">
             <div class="mb-3 row">
-                <label for="kategori" class="col-sm-2 col-form-label">Username</label>
+                <label for="name" class="col-sm-2 col-form-label">Name</label>
                 <div class="col-sm-10">
-                    {{ $userinfo->bio }}
+                    <textarea name="name" class="form-control" placeholder="name" style="width: 100%; height: 20px">{{ $userinfo->name }}</textarea>
                 </div>
             </div>
             <div class="mb-3 row">
-                <label for="tahun_terbit" class="col-sm-2 col-form-label">Phone</label>
+                <label for="bio" class="col-sm-2 col-form-label">Bio</label>
                 <div class="col-sm-10">
-                    {{ $userprofile->phone }}
+                    <textarea name="bio" class="form-control" placeholder="bio" style="width: 100%; height: 60px">{{ $userprofile->bio }}</textarea>
                 </div>
             </div>
             <div class="mb-3 row">
-                <label for="stock" class="col-sm-2 col-form-label">Address</label>
+                <label for="phone" class="col-sm-2 col-form-label">Phone</label>
                 <div class="col-sm-10">
-                    {{ $userprofile->address }}
+                    <textarea name="phone" class="form-control" placeholder="phone" style="width: 100%; height: 20px">{{ $userprofile->phone }}</textarea>
                 </div>
             </div>
-        </div>
-        {{-- <div>
-            <a href="{{ route('account.peminjaman', $data->id) }}" class="btn btn-success">Pinjam</a>
-        </div> --}}
-        {{-- <div>
-            <form action="{{ route('account.post', $data->id) }}" method="POST" style="display: inline;">
-                @csrf
-                <button type="submit" class="btn btn-success">Koleksi</button>
-            </form>
-        </div>
-        <div class="mt-4">
-            <ul class="nav nav-tabs" id="productDetail" role="tablist">
-                <li class="nav-item" role="presentation">
-                    <button class="nav-link active" id="review-tab" data-bs-toggle="tab" data-bs-target="#review" type="button" role="tab" aria-controls="review" aria-selected="true">Review</button>
-                </li>
-            </ul>
-            <div class="tab-content" id="productDetailContent">
-                <div class="tab-pane fade show active" id="review" role="tabpanel" aria-labelledby="review-tab">
-                    <div class="container">
-                        <div class="row">
-                            <div class="col-md-6"> <!-- Adjusted to take up half of the width for better alignment -->
-                                <div class="mb-3">
-                                    <h4 style="margin-bottom: 50px">Write a Review</h4>
-                                    <form method="POST" action="{{ route('account.rating') }}" name="ratingForm" id="ratingForm">
-                                        @csrf
-                                        <input type="hidden" name="buku_id" value="{{ $data->id }}">
-                                        <div class="form-group">
-                                            <label style="color: rgb(145, 145, 36)">Rating:</label>
-                                            <span class="star-rating">
-                                                <label for="rate-1" style="--i:1"><i class="fa-solid fa-star"></i></label>
-                                                <input type="radio" name="rating" id="rate-1" value="1">
-                                                <label for="rate-2" style="--i:2"><i class="fa-solid fa-star"></i></label>
-                                                <input type="radio" name="rating" id="rate-2" value="2">
-                                                <label for="rate-3" style="--i:3"><i class="fa-solid fa-star"></i></label>
-                                                <input type="radio" name="rating" id="rate-3" value="3">
-                                                <label for="rate-4" style="--i:4"><i class="fa-solid fa-star"></i></label>
-                                                <input type="radio" name="rating" id="rate-4" value="4">
-                                                <label for="rate-5" style="--i:5"><i class="fa-solid fa-star"></i></label>
-                                                <input type="radio" name="rating" id="rate-5" value="5">
-                                            </span>
-                                        </div>
-                                        <div class="form-group">
-                                            <label style="margin-top: 30px">Your Review</label>
-                                            <textarea name="review" class="form-control" placeholder="Write Your Review" style="width: 100%; height: 100px"></textarea>
-                                        </div>
-                                        <div class="form-group mt-2">
-                                            <button type="submit" class="btn btn-primary">Submit</button>
-                                        </div>
-                                    </form>
-                                </div>
-                            </div>
-                            <div class="col-md-6"> <!-- Adjusted to take up half of the width for better alignment -->
-                                <div class="mb-3">
-                                    <h4 style="margin-bottom: 50px">Users Review</h4>
-                                    <div class="form-group">
-                                        @if (count($ratings) > 0)
-                                            @foreach ($ratings as $rating)
-                                                <div class="row mb-3">
-                                                    <div class="col-md-6">
-                                                        <p style="color: green; font-weight:500; font-size: 1.2rem">{{ $rating['users_r']['name'] }}</p>
-                                                    </div>
-                                                    <div class="col-md-6" style="size: 2rem">
-                                                        @for ($i = 0; $i < $rating['rating']; $i++)
-                                                            <span>&#9733;</span>
-                                                        @endfor
-                                                    </div>
-                                                    <div class="col-md-12 mt-2" style="border-bottom: 1px solid #ddd; margin-bottom: 0">
-                                                        <p style="font-size: 1rem; font-weight: 400">{{ $rating['review'] }}</p>
-                                                        <p >{{date("d-m-Y", strtotime($rating['created_at']))}}</p>
-                                                    </div>
-                                                </div>
-                                            @endforeach
-                                        @else
-                                            <p><b>Belum Ada review</b></p>
-                                        @endif
-                                    </div>
-
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+            <div class="mb-3 row">
+                <label for="address" class="col-sm-2 col-form-label">Address</label>
+                <div class="col-sm-10">
+                    <textarea name="address" class="form-control" placeholder="address" style="width: 100%; height: 60px">{{ $userprofile->address }}</textarea>
                 </div>
             </div>
-        </div> --}}
+            <div class="mb-3 row">
+                <label for="jk" class="col-sm-2 col-form-label">Jenis Kelamin</label>
+                <div class="col-sm-10">
+                    <select class="form-select" name="jk" id="jk">
+                        <option value="Laki-laki" {{ Session::get('jk') == 'Laki-laki' ? 'selected' : '' }}>Laki-laki</option>
+                        <option value="Perempuan" {{ Session::get('jk') == 'Perempuan' ? 'selected' : '' }}>Perempuan</option>
+                        <option value="Tidak Diketahui" {{ Session::get('jk') == 'null' ? 'selected' : '' }}>-</option>
+                    </select>
+                </div>
+            </div>
+            <div class="mb-3 row">
+                <label for="kategori" class="col-sm-2 col-form-label"></label>
+                <div class="col-sm-10"><button type="submit" class="btn btn-primary" name="submit">Perbarui</button></div>
+            </div>
+        </div>
     </div>
-</div>
-<style>
-    * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-    }
-    .star-rating {
-        white-space: nowrap;
-    }
-    .star-rating [type="radio"] {
-        appearance: none;
-    }
-    .star-rating i {
-        font-size: 1.2em;
-        transition: 0.3s;
-    }
-
-    .star-rating label:is(:hover, :has(~ :hover)) i {
-        transform: scale(1.35);
-        color: #fffdba;
-        animation: jump 0.5s calc(0.3s + (var(--i) - 1) * 0.15s) alternate infinite;
-    }
-    .star-rating label:has(~ :checked) i {
-        color: #faec1b;
-        text-shadow: 0 0 2px #ffffff, 0 0 10px #ffee58;
-    }
-
-    @keyframes jump {
-        0%,
-        50% {
-            transform: translatey(0) scale(1.35);
-        }
-        100% {
-            transform: translatey(-15%) scale(1.35);
-        }
-    }
-</style>
+</form>
 @endsection

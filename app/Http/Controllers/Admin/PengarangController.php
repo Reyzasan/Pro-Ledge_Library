@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\pengarang;
 use Illuminate\Http\Request;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class PengarangController extends Controller
 {
@@ -20,6 +21,16 @@ class PengarangController extends Controller
         }
         return view('Admin.pengarang.user')->with('data', $data);
     }
+
+    public function print(Request $request)
+    {
+        $data = Peminjaman::whereIn('status', ['disetujui', 'batalkan','tolak'])->orWhereNull('status')->get();
+        if($request->get('export') == 'pdf'){
+            $pdf = Pdf::loadView('pdf.assets', ['data' => $data]);
+            return $pdf->stream('Laporan_Peminjaman.pdf');
+        }
+    }
+
 
     /**
      * Show the form for creating a new resource.
@@ -78,7 +89,7 @@ class PengarangController extends Controller
             'jk'=>'required',
         ],[
             'pengarang.required'=>'pengarang wajib diisi!',
-            'jk.required'=>'enis Kelamin wajib diisi!',
+            'jk.required'=>'Jenis Kelamin wajib diisi!',
         ]);
         $data = [
             'pengarang'=>$request->pengarang,

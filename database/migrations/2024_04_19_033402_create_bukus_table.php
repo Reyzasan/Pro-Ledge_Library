@@ -20,6 +20,8 @@ return new class extends Migration
             $table->string('penerbit');
             $table->string('pengarang');
             $table->string('harga')->nullable();
+            $table->string('deskripsi');
+            $table->string('detailkategori');
             $table->timestamps();
         });
     }

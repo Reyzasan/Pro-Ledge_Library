@@ -12,6 +12,13 @@
     </div>
 </div>
 @endif
+@if (Session::has('success'))
+    <div class="pt-3">
+        <div class="alert alert-success">
+            {{ Session::get('success') }}
+        </div>
+    </div>
+@endif
     <form action='{{ route('tampilan.store') }}' method="POST" enctype="multipart/form-data">
         @csrf
         <div class="my-3 p-3 bg-body rounded shadow-sm">
@@ -35,6 +42,17 @@
                 <div class="col-sm-10">
                     <input type="text" class="form-control" name="nama_buku" value="{{ Session::get('nama_buku') }}"
                         id="nama_buku">
+                </div>
+            </div>
+            <div class="mb-3 row">
+                <label for="jenisbuku" class="col-sm-2 col-form-label">Jenis Buku</label>
+                <div class="col-sm-10">
+                    <select class="form-control select2" style="width: 100%" name="jenisbuku" id="jenisbuku">
+                        <option value>Pilih Jenis Buku</option>
+                        @foreach ($jenisbuku as $item)
+                        <option value="{{$item->id}}">{{$item->jenisbuku}}</option>
+                        @endforeach
+                    </select>
                 </div>
             </div>
             <div class="mb-3 row">
@@ -93,6 +111,14 @@
                 <div class="col-sm-10">
                     <input type="text" class="form-control" name="harga" value="{{ Session::get('harga') }}"
                         id="harga">
+                </div>
+            </div>
+            <div class="mb-3 row">
+                <label for="deskripsi" class="col-sm-2 col-form-label">Blurb</label>
+                <div class="col-sm-10">
+                    {{-- <input type="text" class="form-control" name="deskripsi" value="{{ Session::get('deskripsi') }}"
+                        id="deskripsi" style="width: 100%; height: 100px" placeholder="Deskripsi"> --}}
+                    <textarea name="deskripsi" class="form-control" placeholder="Deskripsi" style="width: 100%; height: 100px"></textarea>
                 </div>
             </div>
             <div class="mb-3 row">
