@@ -18,35 +18,37 @@
 
 <div class="container mt-4">
     <div class="pb-3">
-    <form action="{{ route('pinjam-buku') }}" method="GET">
-        @csrf
-        <div class="mb-3 row">
-            <label for="katakunci" class="col-sm-2 col-form-label">Search</label>
-            {{-- <div class="col-sm-10">
-                <input type="text" name="katakunci" class="form-control" placeholder="Search..." value="{{ $katakunci }}">
-            </div> --}}
-        </div>
-        <div class="mb-3 row">
-            <label for="bulan" class="col-sm-2 col-form-label">Filter by Month</label>
-            <div class="col-sm-10">
-                <select name="bulan" class="form-select" id="bulan">
-                    <option value="">-- Select Month --</option>
-                    @for ($i = 1; $i <= 12; $i++)
-                        <option value="{{ $i }}" {{ $bulan == $i ? 'selected' : '' }}>
-                            {{ date('F', mktime(0, 0, 0, $i, 1)) }}
-                        </option>
-                    @endfor
-                </select>
+        <form action="{{ route('pinjam-buku') }}" method="GET">
+            @csrf
+            <div class="mb-3 row">
+                <label for="katakunci" class="col-sm-2 col-form-label">Search</label>
+                <div class="col-sm-10">
+                    <input type="text" name="katakunci" class="form-control" placeholder="Search..." value="{{ $katakunci }}">
+                </div>
             </div>
-        </div>
-        <div class="mb-3 row">
-            <div class="col-sm-10">
-                <button type="submit" class="btn btn-primary">Search</button>
+            <div class="mb-3 row">
+                <label for="bulan" class="col-sm-2 col-form-label">Filter Berdasarkan</label>
+                <div class="col-sm-10">
+                    <select name="bulan" class="form-select" id="bulan">
+                        <option value="">-- Select Month --</option>
+                        @for ($i = 1; $i <= 12; $i++)
+                            <option value="{{ $i }}" {{ $bulan == $i ? 'selected' : '' }}>
+                                {{ date('F', mktime(0, 0, 0, $i, 1)) }}
+                            </option>
+                        @endfor
+                    </select>
+                </div>
             </div>
-        </div>
+            <div class="mb-3 row">
+                <div class="col-sm-10">
+                    <button type="submit" class="btn btn-primary">Search</button>
+                </div>
+            </div>
+        </form>
     </div>
-    </form>
     <div>
+        {{-- <a href="{{ route('pinjam-print')}}" class="btn btn-danger mb-3" style="width: 10%"><i class="fa fa-times"></i> Batal</a>
+        <a href="{{ route('pinjam-print')}}" class="btn btn-warning mb-3" style="width: 10%"><i class="fa fa-times"></i> Tolak</a> --}}
         <a href="{{route('pinjam-print')}}?export=pdf" class="btn btn-primary mb-3">Print</a>
     </div>
 
@@ -60,7 +62,6 @@
                 <th class="col-md-1">Pengajuan</th>
                 <th class="col-md-1">Peminjaman</th>
                 <th class="col-md-1">Pengembalian</th>
-                <th class="col-md-1">Kembali</th>
                 <th class="col-md-2">Status</th>
                 <th class="col-md-3">Aksi</th>
             </tr>
@@ -76,14 +77,13 @@
                 <td>{{ $item->pengajuan }}</td>
                 <td>{{ $item->tangal_peminjaman }}</td>
                 <td>{{ $item->tanggal_pengembalian }}</td>
-                <td>{{ $item->kembali }}</td>
                 <td>
                     @if ($item->status == 'disetujui')
                         <span class="badge bg-success">Disetujui</span>
-                    @elseif ($item->status == 'batal')
+                    @elseif ($item->status == 'batalkan')
                         <span class="badge bg-danger">Dibatalkan</span>
                     @elseif (is_null($item->status))
-                        <span class="badge bg-warning">Belum Disetujui</span>
+                        <span class="badge bg-warning">Meminta Konfirmasi</span>
                     @elseif ($item->status == 'tolak')
                         <span class="badge bg-danger">Ditolak</span>
                     @elseif ($item->status == '-')

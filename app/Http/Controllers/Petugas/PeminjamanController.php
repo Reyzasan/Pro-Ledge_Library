@@ -15,17 +15,20 @@ class PeminjamanController extends Controller
     public function index(Request $request)
     {
         $title = 'Halaman Peminjaman Buku';
-        $data = Peminjaman::whereIn('status', ['disetujui', 'batalkan','tolak'])->orWhereNull('status')->get();
         $katakunci = $request->katakunci;
         $bulan = $request->bulan;
-        // dd($bulan);
-        $query = Peminjaman::with(['kategoris', 'userss', 'bukus']);
+
+        $query = Peminjaman::with(['userss', 'bukus'])->WhereIn('status',['disetujui','tolak','batalkan'])->orWhereNull('status');
 
         if (!empty($katakunci)) {
             $query->where(function ($q) use ($katakunci) {
                 $q->where('id', 'like', "%$katakunci%")
-                ->orWhere('nama_buku', 'like', "%$katakunci%")
-                ->orWhere('kategori', 'like', "%$katakunci%");
+                ->orWhereHas('bukus', function($query) use ($katakunci) {
+                    $query->where('nama_buku', 'like', "%$katakunci%");
+                })
+                ->orWhereHas('userss', function($query) use ($katakunci) {
+                    $query->where('name', 'like', "%$katakunci%");
+                });
             });
         }
 
@@ -33,15 +36,14 @@ class PeminjamanController extends Controller
             $query->whereMonth('tangal_peminjaman', $bulan);
         }
 
-        $nilai = $query->orderBy('id', 'desc')->paginate();
-        // ddg
+        $data = $query->orderBy('id', 'desc')->paginate(10);
 
-        return view('petugas.peminjaman', compact('title', 'data', 'katakunci', 'bulan','nilai'));
+        return view('petugas.peminjaman', compact('title', 'data', 'katakunci', 'bulan'));
     }
 
     public function print(Request $request)
     {
-        $data = Peminjaman::whereIn('status', ['disetujui', 'batalkan','tolak'])->orWhereNull('status')->get();
+        $data = Peminjaman::whereIn('status', ['disetujui'])->orWhereNull('status')->get();
         if($request->get('export') == 'pdf'){
             $pdf = Pdf::loadView('pdf.assets', ['data' => $data]);
             return $pdf->stream('Laporan_Peminjaman.pdf');

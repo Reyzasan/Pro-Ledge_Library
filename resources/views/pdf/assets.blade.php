@@ -9,14 +9,19 @@
         integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
 </head>
 <body>
+    {{-- {{dd($item)}} --}}
     <h1 style="text-align: center; margin-bottom: 60px">Laporan Peminjaman</h1>
     <div class="column" style="display: flex; align-items: center;">
         <h3 style="margin-right: 20px;">ID Petugas : {{ Auth::user()->id }}</h3>
-        <h3>Kategori : </h3>
+        <h3>Petugas : {{Auth::user()->name}}</h3>
     </div>
-    <h3>Petugas : {{Auth::user()->name}}</h3>
-    <h3>Bulan Laporan : </h3>
-    <table class="table" style="border: 2px solid black;">
+    <h3>Status : Disetujui</h3>
+    @if(!empty($bulan))
+        <h3>Bulan Laporan: {{ date('F', mktime(0, 0, 0, $bulan, 1)) }}</h3>
+    @else
+        <h3>Bulan Laporan: Semua Bulan</h3>
+    @endif
+    <table class="table" style="border: 1px solid black;">
         <thead class="table-light" style="padding: 5px">
             <tr>
                 <th class="col-md-1" style="border: 2px solid black;">No</th>
@@ -31,7 +36,7 @@
         <tbody>
             {{-- { ($data)}} --}}
             @foreach ($data as $item)
-            <tr style="border: 2px solid black;">
+            <tr style="border: 1px solid black;">
                 <td style="border: 2px solid black;">{{ $loop->iteration }}</td>
                 <td style="border: 2px solid black;">{{ $item->id }}</td>
                 <td style="border: 2px solid black;">{{ $item->userss->name }}</td>
