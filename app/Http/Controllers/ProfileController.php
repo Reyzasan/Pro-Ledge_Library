@@ -35,6 +35,7 @@ class ProfileController extends Controller
         // dd($user);
 
         // Update user profile data
+        $user->name = $request->name;
         $user->bio = $request->bio;
         $user->phone = $request->phone;
         $user->address = $request->address;

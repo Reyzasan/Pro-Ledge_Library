@@ -76,7 +76,7 @@ class PengarangPetugasController extends Controller
     public function edit(string $id)
     {
         $data = pengarang::where('id',$id)->first();
-        return view('pengarang.pengarangedit')->with('data',$data);
+        return view('petugas.pengarang.pengarangedit')->with('data',$data);
     }
 
     /**

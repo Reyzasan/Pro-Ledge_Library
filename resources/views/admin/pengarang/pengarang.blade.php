@@ -30,7 +30,6 @@
                     <select class="form-select" name="jk" id="jk">
                         <option value="Laki-laki" {{ Session::get('jk') == 'Laki-laki' ? 'selected' : '' }}>Laki-laki</option>
                         <option value="Perempuan" {{ Session::get('jk') == 'Perempuan' ? 'selected' : '' }}>Perempuan</option>
-                        <option value="Tidak Diketahui" {{ Session::get('jk') == 'null' ? 'selected' : '' }}>-</option>
                     </select>
                 </div>
             </div>

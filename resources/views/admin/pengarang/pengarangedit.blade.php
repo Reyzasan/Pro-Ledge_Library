@@ -32,6 +32,15 @@
                 </div>
             </div>
             <div class="mb-3 row">
+                <label for="jk" class="col-sm-2 col-form-label">Jenis Kelamin</label>
+                <div class="col-sm-10">
+                    <select class="form-select" name="jk" id="jk">
+                        <option value="Laki-laki" {{ Session::get('jk') == 'Laki-laki' ? 'selected' : '' }}>Laki-laki</option>
+                        <option value="Perempuan" {{ Session::get('jk') == 'Perempuan' ? 'selected' : '' }}>Perempuan</option>
+                    </select>
+                </div>
+            </div>
+            <div class="mb-3 row">
                 <label for="deskripsi" class="col-sm-2 col-form-label"></label>
                 <div class="col-sm-10"><button type="submit" class="btn btn-primary" name="submit">SIMPAN</button></div>
             </div>

@@ -12,10 +12,10 @@
     </div>
 </div>
 @endif
-    <form action='{{ url('jenisbuku') }}' method='post'>
+    <form action='{{ url('jenisbukus') }}' method='post'>
         @csrf
         <div class="my-3 p-3 bg-body rounded shadow-sm">
-            <a href="{{url('jenisbuku')}}" class="btn btn-secondary"><< Kembali</a>
+            <a href="{{url('jenisbukus')}}" class="btn btn-secondary"><< Kembali</a>
             <h4 style="margin-top: 20px; margin-bottom: 30px; text-align:center">Tambah Data Jenis Buku</h4>
             <div class="mb-3 row">
                 <label for="jenisbuku" class="col-sm-2 col-form-label">Jenis Buku</label>

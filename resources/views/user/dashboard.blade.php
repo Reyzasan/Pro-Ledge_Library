@@ -56,7 +56,7 @@
 
     <div class="row">
         @foreach ($data as $item)
-        <div class="col-md-3 mb-4" style="margin-top: 40px; margin-left: 20px">
+        <div class="col-md-3 mb-1" style="margin-top: 40px; margin-left: 60px;width: 250px">
             <a href="{{ route('account.show', ['id' => $item->id]) }}" style="text-decoration-color: rgba(255, 255, 255, 0);">
                 <div class="book d-flex">
                     <div class="cover">
@@ -66,7 +66,7 @@
                     </div>
                     <div class="column ms-3">
                         <div class="judul mb-2">
-                            <div class="book-box" style="font-size: 1.5rem; color: rgb(0, 0, 0); margin-top: 20px">
+                            <div class="book-box" style="font-size: 1.5rem; color: rgb(0, 0, 0); margin-top: 20px; line-height: 1; overflow: hidden; line-height: 1.25;">
                                 {{ $item->nama_buku }}
                             </div>
                         </div>
@@ -100,8 +100,7 @@
                         <div class="deskripsi" style="width: 90%; height: 60px; background-color: rgba(253, 253, 253, 0); border-radius: 10px; border: 1px solid rgba(255, 255, 255, 0); overflow: hidden">
                             <div class="book-box" style="font-size: 0.875rem; color: rgb(0, 0, 0); line-height: 1.25;">
                                 {{-- <div style="width: 100%;">{{ $item->deskripsi ?? 'Deskripsi tidak tersedia' }}</div> --}}
-                                <div>Presentations are commu nication tools that can be used as demonstrations, lectures, speeches, reports, and more.
-                                    Mostly presented before an audience, it serves a variety of purposes, making presentations powerful tools for convincing and teaching.
+                                <div>{{$item->deskripsi}}
                                     </div>
                             </div>
                         </div>

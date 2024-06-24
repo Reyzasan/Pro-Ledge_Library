@@ -4,7 +4,7 @@
     <form action='{{ url('buku/'.$data->id) }}' method='post' enctype="multipart/form-data">
         @csrf
         @method('PUT')
-        <div class="my-3 p-3 bg-body rounded shadow-sm">
+        <div class="box" style="margin-left: 30px;">
             <a href="{{route('petugas.lihat')}}" class="btn btn-secondary"><< Kembali</a>
             <div class="row mt-3">
                 @if ($data->foto)
@@ -67,7 +67,12 @@
                             </div>
                         </div>
                     </div>
-            </div>
+                </div>
+                <div class="deskripsi" style="width: 100%; height: 60px; background-color: rgba(253, 253, 253, 0); border-radius: 10px; border: 1px solid rgba(255, 255, 255, 0);">
+                    <div class="book-box" style="font-size: 1rem; color: rgb(0, 0, 0); line-height: 1.25; white-space: pre-wrap;">
+                        <div>{{$data->deskripsi}}</div>
+                    </div>
+                </div>
             </div>
         </div>
     </form>

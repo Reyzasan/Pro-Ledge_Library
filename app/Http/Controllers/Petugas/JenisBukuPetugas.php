@@ -54,7 +54,7 @@ class JenisBukuPetugas extends Controller
             'deskripsi'=>$request->deskripsi,
         ];
         jenisbuku::create($data);
-        return redirect()->to('jenisbuku')->with('success', 'Data Berhasil Ditambahkan!');
+        return redirect()->to('jenisbukus')->with('success', 'Data Berhasil Ditambahkan!');
     }
 
     /**
@@ -91,7 +91,7 @@ class JenisBukuPetugas extends Controller
             'deskripsi'=>$request->deskripsi,
         ];
         jenisbuku::where('id',$id)->update($data);
-        return redirect()->to('jenisbuku')->with('success', 'Data Berhasil Terupdate!');
+        return redirect()->to('jenisbukus')->with('success', 'Data Berhasil Terupdate!');
     }
 
     /**
@@ -100,6 +100,6 @@ class JenisBukuPetugas extends Controller
     public function destroy(string $id)
     {
         jenisbuku::where('id',$id)->delete();
-        return redirect()->to('jenisbuku')->with('success','Data Berhasil Dihapus!');
+        return redirect()->to('jenisbukus')->with('success','Data Berhasil Dihapus!');
     }
 }

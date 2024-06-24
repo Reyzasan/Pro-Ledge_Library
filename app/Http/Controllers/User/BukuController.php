@@ -6,6 +6,7 @@ use App\Models\buku;
 use App\Models\kategori;
 use App\Models\penerbit;
 use App\Models\pengarang;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -43,6 +44,7 @@ class BukuController extends Controller
     {
         $data = buku::find($id);
         $pengar = pengarang::find($id);
+        $datapengguna = User::find($id);
         $item = Peminjaman::find($id);
         $pinjam = Peminjaman::with(['userss', 'bukus'])->where('user',  (Auth::user()->id))->where('buku', $id)->get();
         $kolek = Koleksi::with(['userss', 'bukus','kategoris','penerbits'])->where('user',  (Auth::user()->id))->get();
@@ -67,7 +69,7 @@ class BukuController extends Controller
             $avgStarRating = 0;
         }
 
-        return view('user.bukudetailuser', compact('data', 'item','ratings', 'ratingSum', 'ratingCount', 'avgRating', 'avgStarRating','kolek','pinjam','pengar'));
+        return view('user.bukudetailuser', compact('data', 'item','ratings', 'ratingSum', 'ratingCount', 'avgRating', 'avgStarRating','kolek','pinjam','pengar','datapengguna'));
     }
 
     public function koleksi()

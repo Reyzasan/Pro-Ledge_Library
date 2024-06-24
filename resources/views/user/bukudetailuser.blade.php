@@ -16,10 +16,19 @@
     </div>
 @endif
 
-<div class="my-3 p-3 bg-body rounded shadow-sm">
+<div class="container" style="margin-left: 20px">
     @csrf
     <div class="d-flex justify-content-between align-items-center mt-4">
-        <a href="{{ route('account.dashboard') }}" class="btn btn-secondary">Kembali</a>
+        <div class="d-flex">
+            <a href="{{ route('account.dashboard') }}" class="btn btn-secondary">Kembali</a>
+            <div class="box" style="margin-left: 10px">
+                @if ($data->stock == 0)
+                    <span class="badge bg-success" style="padding: 10px; font-size: 16px">Persediaan habis</span>
+                @else
+                    <span class="badge bg-success" style="padding: 10px; font-size: 16px">Persediaan Ada</span>
+                @endif
+            </div>
+        </div>
         <div>
             <?php $star = 1; ?>
             @while ($star <= $avgStarRating)
@@ -58,12 +67,6 @@
                 <label for="tahun_terbit" class="col-sm-2 col-form-label">Tahun Terbit</label>
                 <div class="col-sm-10">
                     {{ $data->tahun_terbit }}
-                </div>
-            </div>
-            <div class="mb-3 row">
-                <label for="stock" class="col-sm-2 col-form-label">Stock</label>
-                <div class="col-sm-10">
-                    {{ $data->stock }}
                 </div>
             </div>
         </div>
@@ -105,15 +108,14 @@
                 @endif
             </div>
         </div>
+        <div class="deskripsi" style="width: 100%; height: 100%; background-color: rgba(253, 253, 253, 0); border-radius: 10px; border: 1px solid rgba(255, 255, 255, 0);">
+            <div class="book-box" style="font-size: 1rem; color: rgb(0, 0, 0); line-height: 1.25; white-space: pre-wrap;">
+                <div>{{$data->deskripsi}}</div>
+            </div>
+        </div>
     </div>
 
-    <div class="mt-4">
-        <ul class="nav nav-tabs" id="productDetail" role="tablist">
-            <li class="nav-item" role="presentation">
-                <button class="nav-link active" id="review-tab" data-bs-toggle="tab" data-bs-target="#review" type="button" role="tab" aria-controls="review" aria-selected="true">Review</button>
-            </li>
-        </ul>
-        {{-- {{dd($ratings)}} --}}
+    <div class="mt-10">
         <div class="tab-content" id="productDetailContent">
             <div class="tab-pane fade show active" id="review" role="tabpanel" aria-labelledby="review-tab">
                 <div class="container mt-4">

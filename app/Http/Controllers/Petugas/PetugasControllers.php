@@ -130,8 +130,9 @@ class PetugasControllers extends Controller
         $kategori = kategori::all();
         $penerbit = penerbit::all();
         $pengarang = pengarang::all();
+        $jenisbuku = jenisbuku::all();
         $data = buku::where('id',$id)->first();
-        return view('petugas.bukuedit',compact('kategori','penerbit','pengarang'))->with('data',$data);
+        return view('petugas.bukuedit',compact('kategori','penerbit','pengarang','jenisbuku'))->with('data',$data);
     }
 
     /**
