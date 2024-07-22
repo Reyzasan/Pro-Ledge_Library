@@ -19,44 +19,13 @@
             </div>
         </form>
     </div>
-    <div class="user">
+    {{-- <div class="user">
         <i class='bx bx-user'></i>
-    </div>
-    {{-- <div class="my-3 p-3 bg-body rounded shadow-sm" style="margin-left: 20px; padding: 20px">
-        <div class="row" style="display: flex; gap: 10px;">
-            {{-- @foreach (['Agama', 'Komik', 'Komik', 'Komik', 'Komik', 'Komik'] as $genre)
-                <div class="col-md-2 mb-2">
-                    <a href="#" style="text-decoration: none;">
-                        <div class="box mb-3" style="width: 150px; height: 60px; background: linear-gradient(45deg, rgba(27, 47, 165, 0.637), rgba(165, 40, 40, 0.637)); border-radius: 10px; position: relative;">
-                            <img src="{{ asset('asset/stars.png') }}" alt="" style="position: absolute; top: -60px; left: 50%; transform: translateX(-50%); width: 180px; height: 180px;">
-                            <div class="book-box text-center" style="padding: 18px; font-size: 1.5rem; color: rgb(8, 8, 8); line-height: 17px;">
-                                {{ $genre }}
-                            </div>
-                        </div>
-                    </a>
-                </div>
-            @endforeach --}}
-        {{-- </div>
-    </div> --}}
-{{--
-    <div class="row genre-section" style="margin: 20px; margin-bottom: 60px; overflow-x: hidden; display: flex; white-space: nowrap;">
-        <h4 style="margin: 10px;">Temukan Genre</h4>
-        @foreach (['Petualangan', 'Fantasi', 'Drama', 'Horor', 'Thriller', 'Romansa', 'Science Fiction'] as $genre)
-            <div class="col-md-1" style="margin: 35px;">
-                <a href="#" style="text-decoration: none;">
-                    <div class="box mb-3" style="width: 135px; height: 40px; background: linear-gradient(45deg, rgba(27, 47, 165, 0.637), rgba(165, 40, 40, 0.637)); border-radius: 10px; position: relative;">
-                        <div class="book-box text-center" style="padding: 8px; font-size: 1.3rem; color: rgb(8, 8, 8); line-height: 17px;">
-                            {{ $genre }}
-                        </div>
-                    </div>
-                </a>
-            </div>
-        @endforeach
     </div> --}}
 
     <div class="row">
         @foreach ($data as $item)
-        <div class="col-md-3 mb-1" style="margin-top: 40px; margin-left: 60px;width: 250px">
+        <div class="col-md-3 mb-1" style="margin-top: 40px; margin-left: 60px;width: 360px">
             <a href="{{ route('account.show', ['id' => $item->id]) }}" style="text-decoration-color: rgba(255, 255, 255, 0);">
                 <div class="book d-flex">
                     <div class="cover">
@@ -66,7 +35,10 @@
                     </div>
                     <div class="column ms-3">
                         <div class="judul mb-2">
-                            <div class="book-box" style="font-size: 1.5rem; color: rgb(0, 0, 0); margin-top: 20px; line-height: 1; overflow: hidden; line-height: 1.25;">
+                            <div class="col-sm-12" style="font-size: 16px; font-weight: 200; margin-top: 10px; height: 25px; overflow: hidden; width: 100%; color: green">
+                                {{ $item->pengarangs->pengarang}}
+                            </div>
+                            <div class="book-box" style="font-size: 1.5rem; color: rgb(0, 0, 0); overflow: hidden; line-height: 1.25; height: 30px">
                                 {{ $item->nama_buku }}
                             </div>
                         </div>
@@ -97,7 +69,7 @@
                                 </div>
                             @endif
                         </td>
-                        <div class="deskripsi" style="width: 90%; height: 60px; background-color: rgba(253, 253, 253, 0); border-radius: 10px; border: 1px solid rgba(255, 255, 255, 0); overflow: hidden">
+                        <div class="deskripsi" style="width: 100%; height: 70px; background-color: rgba(253, 253, 253, 0); border-radius: 10px; border: 1px solid rgba(255, 255, 255, 0); overflow: hidden">
                             <div class="book-box" style="font-size: 0.875rem; color: rgb(0, 0, 0); line-height: 1.25;">
                                 {{-- <div style="width: 100%;">{{ $item->deskripsi ?? 'Deskripsi tidak tersedia' }}</div> --}}
                                 <div>{{$item->deskripsi}}

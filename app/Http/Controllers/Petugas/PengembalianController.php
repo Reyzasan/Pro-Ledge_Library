@@ -16,45 +16,46 @@ class PengembalianController extends Controller
 {
     public function index(Request $request)
     {
-        $user = User::all();
-
+        $title = 'Halaman Peminjaman Buku';
         $katakunci = $request->katakunci;
-        $dataPeminjaman = collect(); // Inisialisasi variabel sebagai koleksi kosong
-        $dataUser = collect(); // Inisialisasi variabel sebagai koleksi kosong
+        $bulan = $request->bulan;
 
-    if (strlen($katakunci)) {
-        // Pencarian pada model Peminjaman
-        $dataPeminjaman = Peminjaman::with('userss', 'bukus')
-            ->where('id', 'like', "%$katakunci%")
-            ->orWhereHas('userss', function($query) use ($katakunci) {
-                $query->where('name', 'like', "%$katakunci%");
-            })
-            ->orWhereHas('bukus', function($query) use ($katakunci) {
-                $query->where('nama_buku', 'like', "%$katakunci%");
-            })
-            ->paginate();
+        $query = Peminjaman::with(['userss', 'bukus'])
+            ->whereIn('status', ['kembali', 'terlambat', 'selesai'])
+            ->whereIn('detailstatus', ['rusak', 'hilang', '-']);
 
-        // Pencarian pada model User
-        $dataUser = User::where('id', 'like', "%$katakunci%")
-            ->orWhere('name', 'like', "%$katakunci%")
-            ->paginate();
-    } else {
-        // Mengambil semua data jika tidak ada kata kunci
-        $dataPeminjaman = Peminjaman::with('userss', 'bukus')->orderBy('id', 'desc')->paginate();
-        $dataUser = User::orderBy('id', 'desc')->paginate();
+        if (!empty($katakunci)) {
+            $query->where(function ($q) use ($katakunci) {
+                $q->where('id', 'like', "%$katakunci%")
+                ->orWhereHas('bukus', function ($query) use ($katakunci) {
+                    $query->where('nama_buku', 'like', "%$katakunci%");
+                })
+                ->orWhereHas('userss', function ($query) use ($katakunci) {
+                    $query->where('name', 'like', "%$katakunci%");
+                });
+            });
+        }
+
+        if (!empty($bulan)) {
+            $query->whereMonth('kembali', $bulan);
+        }
+
+        $data = $query->orderBy('id', 'desc')->paginate(10);
+
+        return view('petugas.pengembalian', compact('title', 'data', 'katakunci', 'bulan'));
     }
 
-    // Menggabungkan hasil dari dua model
-    $data = $dataPeminjaman->merge($dataUser);
-        $data = Peminjaman::whereIn('status', ['kembali', 'terlambat','selesai'])->whereIn('detailstatus', ['rusak', 'hilang','-'])->get();
-        return view('petugas.pengembalian', compact('data', 'user', 'katakunci'))->with('data',$data);
-    }
 
     public function print(Request $request)
     {
+        $bulan = $request->bulan;
+
+        if (!empty($bulan)) {
+            $query->whereMonth('kembali', $bulan);
+        }
         $data = Peminjaman::whereIn('status', ['kembali', 'terlambat','selesai'])->whereIn('detailstatus', ['rusak', 'hilang','-'])->get();
         if($request->get('export') == 'pdf'){
-            $pdf = Pdf::loadView('pdf.assets', ['data' => $data]);
+            $pdf = Pdf::loadView('pdf.pengembalian', ['data' => $data]);
             return $pdf->stream('Laporan_Peminjaman.pdf');
         }
     }

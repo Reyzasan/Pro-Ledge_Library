@@ -74,7 +74,7 @@ class BukuController extends Controller
 
     public function koleksi()
     {
-        $data = Koleksi::with(['userss', 'bukus','kategoris','penerbits'])->where('user',  (Auth::user()->id))->where('status', 'koleksi')->get();
+        $data = Koleksi::with(['userss', 'bukus','kategoris','penerbits','deskripsi'])->where('user',  (Auth::user()->id))->where('status', 'koleksi')->get();
         // $kolek = Koleksi::where('status', 'koleksi')
         //     ->where('user', Auth::user()->id)  // Assuming 'user' field exists in Peminjaman model
         //     ->get();
@@ -102,13 +102,14 @@ class BukuController extends Controller
             return redirect()->back()->with('error', 'Buku tidak ditemukan.');
         }
 
+
         DB::table('koleksis')->insert([
             'nama_buku' => $id,
             'user' => Auth::user()->id,
             'foto' => $buku->foto,
             'kategori' => $buku->kategoris->id,
-            'penerbit' => $buku->penerbits->id,
-            'deskripsi' => 'jhdjhdjhefj',
+            'penerbit' => 'hallo',
+            'deskripsi' => $buku->penerbits->id,
             'status' => 'koleksi'
         ]);
 

@@ -18,38 +18,38 @@
 
 <div class="container mt-4">
     <div class="pb-3">
-        <form action="{{ route('pinjam-buku') }}" method="GET">
-            @csrf
-            <div class="mb-3 row">
-                <label for="katakunci" class="col-sm-2 col-form-label">Search</label>
-                <div class="col-sm-10">
-                    <input type="text" name="katakunci" class="form-control" placeholder="Search..." value="{{ $katakunci }}">
+        <div class="pb-3">
+            <form action="{{ route('pinjam-buku') }}" method="GET">
+                @csrf
+                <div class="mb-3 row">
+                    <label for="katakunci" class="col-sm-2 col-form-label">Search</label>
+                    <div class="col-sm-10">
+                        <input type="text" name="katakunci" class="form-control" placeholder="Search..." value="{{ $katakunci }}">
+                    </div>
                 </div>
-            </div>
-            <div class="mb-3 row">
-                <label for="bulan" class="col-sm-2 col-form-label">Filter Berdasarkan</label>
-                <div class="col-sm-10">
-                    <select name="bulan" class="form-select" id="bulan">
-                        <option value="">-- Select Month --</option>
-                        @for ($i = 1; $i <= 12; $i++)
-                            <option value="{{ $i }}" {{ $bulan == $i ? 'selected' : '' }}>
-                                {{ date('F', mktime(0, 0, 0, $i, 1)) }}
-                            </option>
-                        @endfor
-                    </select>
+                <div class="mb-3 row">
+                    <label for="bulan" class="col-sm-2 col-form-label">Filter Berdasarkan</label>
+                    <div class="col-sm-10">
+                        <select name="bulan" class="form-select" id="bulan">
+                            <option value="">-- Select Month --</option>
+                            @for ($i = 1; $i <= 12; $i++)
+                                <option value="{{ $i }}" {{ $bulan == $i ? 'selected' : '' }}>
+                                    {{ date('F', mktime(0, 0, 0, $i, 1)) }}
+                                </option>
+                            @endfor
+                        </select>
+                    </div>
                 </div>
-            </div>
-            <div class="mb-3 row">
-                <div class="col-sm-10">
-                    <button type="submit" class="btn btn-primary">Search</button>
+                <div class="mb-3 row">
+                    <div class="col-sm-10">
+                        <button type="submit" class="btn btn-primary">Search</button>
+                    </div>
                 </div>
-            </div>
-        </form>
+            </form>
+        </div>
     </div>
     <div>
-        {{-- <a href="{{ route('pinjam-print')}}" class="btn btn-danger mb-3" style="width: 10%"><i class="fa fa-times"></i> Batal</a>
-        <a href="{{ route('pinjam-print')}}" class="btn btn-warning mb-3" style="width: 10%"><i class="fa fa-times"></i> Tolak</a> --}}
-        <a href="{{route('pinjam-print')}}?export=pdf" class="btn btn-primary mb-3">Print</a>
+        <a href="{{ route('pinjam-print') }}?export=pdf&bulan={{ $bulan }}" class="btn btn-primary mb-3">Print</a>
     </div>
 
     <table class="table table-hover table-striped table-bordered">

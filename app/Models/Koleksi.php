@@ -29,5 +29,9 @@ class Koleksi extends Model
     {
         return $this->belongsTo('App\Models\Penerbit', 'penerbit');
     }
+    public function deskripsi()
+    {
+        return $this->belongsTo('App\Models\buku', 'deskripsi');
+    }
 
 }

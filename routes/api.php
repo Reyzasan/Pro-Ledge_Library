@@ -10,6 +10,7 @@ use App\Http\Controllers\api\APIProfilController;
 use App\Http\Controllers\api\APIFavoritController;
 use App\Http\Controllers\api\APIAutentifikasiController;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Auth;
 
 Route::get('/user', function (Request $request) {
     return $request->user();
@@ -36,5 +37,6 @@ Route::get('/penerbit/{name}', [APIPenerbitController::class, 'GetDataName'])->n
 Route::post('/login', [APIAutentifikasiController::class, 'login'])->name('login');
 Route::get('/logout', [APIAutentifikasiController::class, 'logout'])->name('logout')->middleware(['auth:sanctum']);
 Route::get('/me', [APIAutentifikasiController::class, 'akunlogin'])->name('logout')->middleware(['auth:sanctum']);
-
+//Register
+Route::post('/users',[APIAutentifikasiController::class, 'register']);
 

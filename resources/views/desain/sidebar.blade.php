@@ -16,18 +16,18 @@
 <body>
     <div class="sidebar">
         <div class="logo-detail">
-            <i class='bx bx-menu-alt-left'></i>
-            <span>Pro-Ledge</span>
+            <i class='bx bx-menu-alt-left' style="color: white"></i>
+            <span style="color: white">Pro-Ledge</span>
         </div>
         <ul class="nav-links">
-            <div class="Profile">
+            {{-- <div class="Profile">
                 <a href="{{route('profile')}}">
                     <i class='bx bxs-grid-alt'></i>
                     <span>Profile</span>
                 </a>
                 <span class="tooltip">Profile</span>
-            </div>
-            <div class="dashboard">
+            </div> --}}
+            <div class="dashboard" style="margin-top: 10rem">
                 <a href="{{route('account.dashboard')}}">
                     <i class='bx bxs-grid-alt'></i>
                     <span>Dashboard</span>
@@ -48,7 +48,7 @@
                 </a>
                 <span class="tooltip">Peminjaman</span>
             </div>
-            <div class="logout" style="margin-top: 15rem">
+            <div class="logout" style="margin-top: 12rem">
                 <a href="{{ route('account.logout') }}" class="logout-link">
                     <i class='bx bx-door-open'></i>
                     <span>Log Out</span>

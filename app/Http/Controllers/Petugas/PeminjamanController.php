@@ -18,7 +18,7 @@ class PeminjamanController extends Controller
         $katakunci = $request->katakunci;
         $bulan = $request->bulan;
 
-        $query = Peminjaman::with(['userss', 'bukus'])->WhereIn('status',['disetujui','tolak','batalkan'])->orWhereNull('status');
+        $query = Peminjaman::with(['userss', 'bukus'])->whereIn('status', ['disetujui', 'tolak', 'batalkan'])->orWhereNull('status');
 
         if (!empty($katakunci)) {
             $query->where(function ($q) use ($katakunci) {
@@ -33,7 +33,7 @@ class PeminjamanController extends Controller
         }
 
         if (!empty($bulan)) {
-            $query->whereMonth('tangal_peminjaman', $bulan);
+            $query->whereMonth('pengajuan', $bulan);
         }
 
         $data = $query->orderBy('id', 'desc')->paginate(10);
@@ -41,14 +41,25 @@ class PeminjamanController extends Controller
         return view('petugas.peminjaman', compact('title', 'data', 'katakunci', 'bulan'));
     }
 
+
     public function print(Request $request)
     {
-        $data = Peminjaman::whereIn('status', ['disetujui'])->orWhereNull('status')->get();
+        $bulan = $request->bulan;
+
+        $query = Peminjaman::with(['userss', 'bukus'])->whereIn('status', ['disetujui', 'tolak', 'batalkan'])->orWhereNull('status');
+
+        if (!empty($bulan)) {
+            $query->whereMonth('pengajuan', $bulan);
+        }
+
+        $data = $query->get();
+
         if($request->get('export') == 'pdf'){
-            $pdf = Pdf::loadView('pdf.assets', ['data' => $data]);
+            $pdf = Pdf::loadView('pdf.assets', ['data' => $data, 'bulan' => $bulan]);
             return $pdf->stream('Laporan_Peminjaman.pdf');
         }
     }
+
 
     private function checkActiveLoans()
     {
